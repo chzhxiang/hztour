@@ -15,7 +15,7 @@
             </p>
             <span style="font-size: 1em;">内容：</span><br/>
             <textarea class="essayTxt" v-model="editContent"></textarea>
-            <label for="turismPicture" class="essayPicture">+</label>
+            <label for="turismPicture" class="essayPicture" @click="reImg">重新上传图片</label>
             <input type="file" name="turismPicture" id="turismPicture" class="essayPictureFile" @change="upImgFn"/>
           </form>
           <div id="imgBox" style="overflow: hidden;">
@@ -42,6 +42,7 @@
         return{
           editTitle:'',
           editContent:'',
+          id:'',
           userName:'',
           imgs:'',
           imgFlag:'',
@@ -56,8 +57,6 @@
         console.log(JSON.parse(window.localStorage.getItem("userInfo"))[0].userName);
         if(JSON.parse(window.localStorage.getItem("userInfo")).length>0){
           this.userName=JSON.parse(window.localStorage.getItem("userInfo"))[0].userName;
-          this.imgFlag=this.userName+''+new Date().getFullYear()+'-'+new Date().getMonth()+'-'+new Date().getDate()+' '+new Date().getHours()+':'+new Date().getMinutes()+':'+new Date().getSeconds()+' '+Math.random()+' '+Math.random();
-          console.log(this.imgFlag);
         }else {
           alert('您的状态未登录状态，请前往登录！');
           return;
@@ -70,6 +69,10 @@
         Scroll
       },
       methods:{
+        reImg(){
+          document.getElementById('imgBox').innerHTML='';
+          //删除原图片
+        },
         //上传图片
         upImgFn(e){
           if (e.target.files[0].type !== "image/jpeg" && e.target.files[0].type !== "image/gif" && e.target.files[0].type !== "image/png" && e.target.files[0].type !== "image/bmp") {
@@ -103,7 +106,7 @@
             });
           }
         },
-        //上传
+        //修改
         travelsSubmit(){
           console.log(this.imgFlag);
           if(this.editTitle.trim()===''){
@@ -114,12 +117,14 @@
             alert('游记内容不能为空！');
             return;
           }
+          if(this.editTitle.trim()===this.upDataTravels.articleName&&this.editContent.trim()===this.upDataTravels.editContent){
+            //检测是否修改
+          }
           let editTime=new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate();
-          axios.post('/travels/register',{
-            author:this.userName,
+          axios.post('/travels/upTravels',{
+            _id:this.id,
             articleName:this.editTitle,
             articleContent:this.editContent,
-            flag:this.imgFlag,
             articleTime:editTime
           }).then((res)=>{
             console.log(res.data);
@@ -145,6 +150,19 @@
         upDataTravels(val){
           this.editTitle=val.articleName;
           this.editContent=val.articleContent;
+          this.imgFlag=val.flag;
+          this.id=val._id;
+          axios.post("/travels/selTravelsimg",{
+            flag:val.flag
+          }).then((res)=>{
+            console.log(res.data);
+            if(res.data.code===0){
+              for(let i=0;i<res.data.data.length;i++){
+                console.log(i);
+                document.getElementById('imgBox').innerHTML=document.getElementById('imgBox').innerHTML+"<div style='width: 100px;height: 100px;float: left;overflow: hidden;margin: 10px;line-height: 100px;'><img src='"+res.data.data[i].path+"' style='height: 100px;'/></div>";
+              }
+            }
+          })
         }
       }
     }
@@ -191,7 +209,7 @@
     .essayPictureFile
       display none
     .essayPicture
-      width 30px
+      width 100px
       height 30px
       border-radius 4px
       background lightskyblue

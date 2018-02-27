@@ -74,9 +74,20 @@ Router.post('/delFile',(req,res)=>{
   });
 });
 
-//查
+//查游记
 Router.post('/selTravels',(req,res)=>{
   Travels.find({author:req.body.author},(err,data)=> {
+    if(err){
+      return res.json({'code':1,'msg':err});
+    }
+    return res.json({'code':0,'data':data});
+  });
+});
+
+//查图片
+Router.post('/selTravelsimg',(req,res)=>{
+  const {flag}=req.body;
+  TravelsImg.find({flag},(err,data)=> {
     if(err){
       return res.json({'code':1,'msg':err});
     }
@@ -97,14 +108,8 @@ Router.post('/delTravels',(req,res)=>{
 
 //修改
 Router.post('/upTravels',(req,res)=>{
-  const {articleName}=req.body;
-  // Travels.remove({articleName},(err,data)=>{
-  //   if(err){
-  //     return res.json({'code':1,'msg':err});
-  //   }
-  //   res.json({'code':0,"msg":"删除成功！"});
-  // });
-  Travels.update({userName},{$set:{pwd}},(err,data)=>{
+  const {_id,articleName,articleContent,articleTime}=req.body;
+  Travels.update({_id},{$set:{articleName,articleContent,articleTime}},(err,data)=>{
     if(err){
       return res.json({code:1,msg:err});
     }
