@@ -1,0 +1,2 @@
+//修改游记
+export const SET_UPDATATRAVELS="SET_UPDATATRAVELS";
