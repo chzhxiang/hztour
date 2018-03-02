@@ -17,7 +17,7 @@
       <p @click="myTravels"><img src="http://localhost:8080/static/icon/myEdit.png"/>我的游记</p>
       <p><img src="http://localhost:8080/static/icon/collection.png"/>我的收藏</p>
       <p><img src="http://localhost:8080/static/icon/follow.png"/>我的关注</p>
-      <p class="out">退出登录</p>
+      <p class="out" @click="outLoginFn">退出登录</p>
     </div>
   </div>
 </template>
@@ -34,15 +34,14 @@
           }
       },
       created(){
-        console.log(window.clientHeight);
         if(JSON.parse(window.localStorage.getItem("userInfo")).length>0){
           this.userName=JSON.parse(window.localStorage.getItem("userInfo"))[0].userName;
           this.userImg=JSON.parse(window.localStorage.getItem("userInfo"))[0].avatar;
         }
-        console.log(window.localStorage.getItem("userInfo"));
+        // console.log(window.localStorage.getItem("userInfo"));
       },
       computed:{
-        // ...mapGetters([])
+        ...mapGetters(['loginSuccess'])
       },
       methods:{
         goLogin(){
@@ -66,12 +65,27 @@
         myTravels(){
           this.$router.push("/my/myTravels");
         },
+        outLoginFn(){
+          window.localStorage.setItem("userInfo",JSON.stringify([{
+            userName:'',
+            avatar:''
+          }]));
+          this.userImg='';
+          this.userName='';
+          this.setLoginSuccess(false);
+        },
         ...mapMutations({
-
+          setLoginSuccess:"SET_LOGINSUCCESS"
         })
       },
       watch:{
-
+        loginSuccess(){
+          // console.log('loginsuccess');
+          if(JSON.parse(window.localStorage.getItem("userInfo")).length>0){
+            this.userName=JSON.parse(window.localStorage.getItem("userInfo"))[0].userName;
+            this.userImg=JSON.parse(window.localStorage.getItem("userInfo"))[0].avatar;
+          }
+        }
       }
     }
 </script>

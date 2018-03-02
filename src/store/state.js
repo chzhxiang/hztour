@@ -5,6 +5,7 @@ const state={
     articleTime:'',
     author:'',
     flag:''
-  }
+  },
+  loginSuccess:false
 }
 export default state;

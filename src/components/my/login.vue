@@ -1,6 +1,6 @@
 <template>
     <div class="loginBox">
-      <div>
+      <div class="backBox">
         <img src="http://localhost:8080/static/icon/back.png" class="backIcon" @click="backFn"/>
         <p class="myTravelsTitle">登录</p>
       </div>
@@ -8,7 +8,7 @@
         昵称：<input type="text" v-model="loginName"/>
       </div>
       <div class="pwd">
-        密码：<input type="password" v-model="loginPwd"/>
+        密码：<input type="password" v-model="loginPwd" @keyup.enter="loginFn"/>
       </div>
       <div class="btnBox">
         <p class="login" @click="loginFn">登录</p>
@@ -56,10 +56,9 @@
             userName:this.loginName,
             pwd:this.md5Pwd(this.md5Pwd(this.loginPwd))
           }).then((res)=>{
-            // console.log(res.data);
+            console.log(res.data);
             if(res.data.code===0){
-              console.log(67437473);
-              console.log(res.data.data[0].avatar);
+              let id=res.data.data[0]._id;
               if(res.data.data[0].avatar){
                 console.log(67437473);
                 axios.post("/user/reqAvatar",{
@@ -68,27 +67,30 @@
                   if(resagain.data.code===0){
                     window.localStorage.setItem("userInfo",JSON.stringify([{
                       userName:this.loginName,
-                      avatar:resagain.data.msg.path
+                      avatar:resagain.data.msg.path,
+                      id:id
                     }]));
-                    // console.log(window.localStorage.getItem("userInfo"));
                     alert("登录成功！");
+                    this.setLoginSuccess(true);
                     this.loginName="";
                     this.loginPwd="";
                     this.$router.push('/my');
-                    // this.setIsLogin(false);
-                    // this.setIsMy(true);
                   }else {
                     alert('登录失败，请重试！');
                     return;
                   }
                 });
               }else {
+                window.localStorage.setItem("userInfo",JSON.stringify([{
+                  userName:this.loginName,
+                  avatar:res.data.data[0].avatar,
+                  id:id
+                }]));
+                this.setLoginSuccess(true);
                 alert("登录成功！");
                 this.loginName="";
                 this.loginPwd="";
                 this.$router.push('/my');
-                // this.setIsLogin(false);
-                // this.setIsMy(true);
               }
               return;
             }else{
@@ -107,10 +109,7 @@
           this.$router.push("/my");
         },
         ...mapMutations({
-          setIsLogin:"SET_ISLOGIN",
-          setIsRegister:"SET_ISREGISTER",
-          setIsMy:"SET_ISMY",
-          setIsForgetPwd:"SET_ISFORGETPWD"
+          setLoginSuccess:"SET_LOGINSUCCESS"
         })
       }
     }
@@ -134,6 +133,7 @@
     z-index: 10;
   }
   .myTravelsTitle{
+    color: #333;
     position: absolute;
     top: 5px;
     left: 0px;

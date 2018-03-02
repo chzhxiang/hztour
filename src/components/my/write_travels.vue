@@ -1,7 +1,7 @@
 <template>
     <div class="writeTravelsBox">
       <!--<quillEditor/>-->
-      <div>
+      <div class="backBox">
         <img src="http://localhost:8080/static/icon/back.png" class="backIcon" @click="backFn"/>
         <p class="myTravelsTitle">写游记</p>
       </div>
@@ -168,7 +168,8 @@
         },
         //返回
         backFn(){
-          this.$router.push("/my");
+          window.history.back();
+          // this.$router.push("/my");
         }
       }
     }
@@ -193,6 +194,7 @@
     z-index:10;
   }
   .myTravelsTitle{
+    color #333;
     position: absolute;
     top: 5px;
     left: 0px;

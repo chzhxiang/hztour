@@ -1,6 +1,6 @@
 <template>
   <div class="rigsterBox">
-    <div>
+    <div class="backBox">
       <img src="http://localhost:8080/static/icon/back.png" class="backIcon" @click="backFn"/>
       <p class="myTravelsTitle">注册</p>
     </div>
@@ -151,6 +151,7 @@
     z-index: 10;
   }
   .myTravelsTitle{
+    color: #333;
     position: absolute;
     top: 5px;
     left: 0px;

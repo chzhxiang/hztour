@@ -1,6 +1,6 @@
 <template>
     <div class="myTravelsBox">
-      <div>
+      <div class="backBox">
         <img src="http://localhost:8080/static/icon/back.png" class="backIcon" @click="backFn"/>
         <p class="myTravelsTitle">我的游记</p>
       </div>
@@ -65,7 +65,8 @@
       },
       methods:{
         backFn(){
-          this.$router.push("/my");
+          window.history.back();
+          // this.$router.push("/my");
         },
         //删除
         delTravels(val,index){
@@ -111,6 +112,7 @@
     z-index: 10;
   }
   .myTravelsBox{
+    color: #333;
     position: absolute;
     top: 0px;
     left: 0px;

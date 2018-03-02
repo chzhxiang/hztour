@@ -1,6 +1,6 @@
 <template>
   <div class="forgetBox">
-    <div>
+    <div class="backBox">
       <img src="http://localhost:8080/static/icon/back.png" class="backIcon" @click="backFn"/>
       <p class="myTravelsTitle">忘记密码</p>
     </div>
@@ -128,6 +128,7 @@
     text-align: center;
     width: 100%;
     font-size: 1.2em;
+    color: #333;
     /*z-index: -1;*/
   }
   .userName,.pwd{

@@ -1,2 +1,4 @@
 //修改游记
 export const SET_UPDATATRAVELS="SET_UPDATATRAVELS";
+//登录成功
+export const SET_LOGINSUCCESS="SET_LOGINSUCCESS";

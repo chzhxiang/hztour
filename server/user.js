@@ -97,6 +97,30 @@ Router.post('/forgetup',(req,res)=>{
   })
 });
 
+//修改密码
+Router.post('/upPwd',(req,res)=>{
+  const {_id,pwd,nPwd}=req.body;
+  console.log(req.body);
+  // User.update({userName},{$set:{pwd}},(err,data)=>{
+  //   if(err){
+  //     return res.json({code:1,msg:err});
+  //   }
+  //   return res.json({code:0,msg:"成功！"});
+  // })
+});
+
+//修改基本信息
+Router.post('/up',(req,res)=>{
+  const {_id,userName,avatar}=req.body;
+  console.log(req.body);
+  // User.update({userName},{$set:{pwd}},(err,data)=>{
+  //   if(err){
+  //     return res.json({code:1,msg:err});
+  //   }
+  //   return res.json({code:0,msg:"成功！"});
+  // })
+});
+
 //获取图片文件信息
 Router.post('/reqAvatar',(req,res)=>{
   console.log(req.query);

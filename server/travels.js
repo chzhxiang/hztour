@@ -56,6 +56,8 @@ Router.post('/delFile',(req,res)=>{
     if (err) {
       return res.json({"code": 1, "msg": err});
     }
+    console.log("data");
+    console.log(data);
     if(data.length>0){
       for(let i=0;i<data.length;i++){
         TravelsImg.remove({flag},(err,data)=>{

@@ -1,7 +1,7 @@
 <template>
   <div class="writeTravelsBox">
     <!--<quillEditor/>-->
-    <div>
+    <div class="backBox">
       <img src="http://localhost:8080/static/icon/back.png" class="backIcon" @click="backFn"/>
       <p class="myTravelsTitle">编辑</p>
     </div>
@@ -46,7 +46,8 @@
           userName:'',
           imgs:'',
           imgFlag:'',
-          h:0
+          h:0,
+          delImg:0
         }
       },
       created(){
@@ -57,6 +58,7 @@
         console.log(JSON.parse(window.localStorage.getItem("userInfo"))[0].userName);
         if(JSON.parse(window.localStorage.getItem("userInfo")).length>0){
           this.userName=JSON.parse(window.localStorage.getItem("userInfo"))[0].userName;
+          this.init();
         }else {
           alert('您的状态未登录状态，请前往登录！');
           return;
@@ -69,9 +71,37 @@
         Scroll
       },
       methods:{
+        //初始化
+        init(){
+          this.editTitle=this.upDataTravels.articleName;
+          this.editContent=this.upDataTravels.articleContent;
+          this.imgFlag=this.upDataTravels.flag;
+          this.id=this.upDataTravels._id;
+          axios.post("/travels/selTravelsimg",{
+            flag:this.upDataTravels.flag
+          }).then((res)=>{
+            console.log(res.data);
+            if(res.data.code===0){
+              for(let i=0;i<res.data.data.length;i++){
+                console.log(i);
+                document.getElementById('imgBox').innerHTML=document.getElementById('imgBox').innerHTML+"<div style='width: 100px;height: 100px;float: left;overflow: hidden;margin: 10px;line-height: 100px;'><img src='"+res.data.data[i].path+"' style='height: 100px;'/></div>";
+              }
+            }
+          })
+        },
+        //重新上传
         reImg(){
+          this.delImg++;
+          if(this.delImg>1){
+            return;
+          }
           document.getElementById('imgBox').innerHTML='';
           //删除原图片
+          axios.post("/travels/delFile",{
+            flag:this.upDataTravels.flag
+          }).then((res)=>{
+            console.log(res.data);
+          })
         },
         //上传图片
         upImgFn(e){
@@ -143,7 +173,7 @@
         },
         //返回
         backFn(){
-          this.$router.push("/my");
+          window.history.back();
         }
       },
       watch:{
@@ -187,6 +217,7 @@
     z-index:10;
   }
   .myTravelsTitle{
+    color:#333;
     position: absolute;
     top: 5px;
     left: 0px;
