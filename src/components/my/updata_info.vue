@@ -18,7 +18,7 @@
           <div class="avaterBox">
             <label for="fileUp" class="fileBox"></label>
             <input type="file" id="fileUp" @change="upLoad" v-show="false"/>
-            <img :src="userImg?userImg:'http://localhost:8080/static/imgs/user/user.jpg'" class="avaterImg"/>
+            <img :src="userImg?userImg:'http://localhost:8080/static/imgs/user/user.jpg'" class="avaterImg" id="avaterImg"/>
           </div>
           <div class="userName">
             <span class="txt">昵称：</span><input type="text" v-model="userName"/>
@@ -32,7 +32,7 @@
             <span class="txt">旧密码：</span><input type="password" v-model="pwd"/>
           </div>
           <div class="pwd">
-            <span class="txt">新密码：</span><input type="password" v-model="pwd"/>
+            <span class="txt">新密码：</span><input type="password" v-model="npwd"/>
           </div>
           <div class="pwd">
             <span class="txt">确认密码：</span><input type="password" v-model="againPwd"/>
@@ -48,23 +48,29 @@
 
 <script>
   import utils from "utility";
+  import axios from "axios";
     export default {
         name: "updata_info",
       data(){
           return{
             userName:'',
             userImg:'',
+            id:'',
+            npwd:'',
             pwd:'',
             againPwd:'',
             baseInfo:true,
-            pwdInfo:false
+            pwdInfo:false,
+            flag:''
           }
       },
       created(){
         if(JSON.parse(window.localStorage.getItem("userInfo")).length>0){
           this.userName=JSON.parse(window.localStorage.getItem("userInfo"))[0].userName;
           this.userImg=JSON.parse(window.localStorage.getItem("userInfo"))[0].avatar;
-          // console.log(this.userImg);
+          this.id=JSON.parse(window.localStorage.getItem("userInfo"))[0].id;
+          this.flag=JSON.parse(window.localStorage.getItem("userInfo"))[0].flag;
+          console.log(this.id);
           // document.getElementById('avaterImg').src=this.userImg;
         }else {
           alert("您还未登录，请先登录！");
@@ -77,13 +83,35 @@
           if (e.target.files[0].type !== "image/jpeg" && e.target.files[0].type !== "image/gif" && e.target.files[0].type !== "image/png" && e.target.files[0].type !== "image/bmp") {
             alert("图片格式错误！");
             return;
-          }
-          ;
+          };
+          // this.upTx();
           var fileR = new FileReader();
           var filName = e.target.files[0];
           fileR.readAsDataURL(filName);
           fileR.onload=function(){
             document.getElementById('avaterImg').src=fileR.result;
+            // this.userImg=fileR.result;
+            let form = new FormData();
+            console.log('imgFlag');
+            const config = {
+              headers: {
+                "Content-Type": "multipart/form-data"
+              }
+            };
+            // console.log(this.userName);
+            form.append('imgName',JSON.parse(window.localStorage.getItem("userInfo"))[0].flag);
+            form.append('name', this.userName);
+            form.append("file", document.getElementById('fileUp').files[0]);
+            axios.post("/user/upload", form, config).then((res) => {
+              // console.log(res.data);
+              if (res.data.code === 1){
+                alert('图片上传失败,请重试！');
+                return;
+              } else {
+                alert('图片上传成功！');
+                return;
+              }
+            })
           }
         },
         backFn(){
@@ -97,7 +125,51 @@
           this.$refs.pwdTxt.style.color="#666";
         },
         updateBaseFn(){
-
+          console.log(document.getElementById('fileUp').files[0]);
+          if(!this.userName.trim()){
+            alert('昵称不能为空！');
+            return;
+          }
+          axios.post('/user/upBaseInfo', {
+            userName:JSON.parse(window.localStorage.getItem("userInfo"))[0].userName,
+            nUserName:this.userName,
+            _id:this.id
+          }).then((res) => {
+            console.log(res.data);
+            if (res.data.code === 1) {
+              alert(res.data.msg);
+              return;
+            } else {
+              alert('修改成功！');
+              this.$router.push("/my/login");
+            }
+          });
+        },
+        //修改头像
+        upTx(){
+          let form = new FormData();
+          // console.log(imgFlag);
+          const config = {
+            headers: {
+              "Content-Type": "multipart/form-data"
+            }
+          };
+          form.append('flag',this.flag);
+          form.append('name', this.userName);
+          form.append("file", document.getElementById('fileUp').files[0]);
+          axios.post("/user/reUpload", form, config).then((res) => {
+            console.log(res.data);
+            if (res.data.code === 1) {
+              alert('修改失败,请重试！');
+              return;
+            } else {
+              alert('修改成功！');
+              // this.$router.push('/my/login');
+              // this.setIsLogin(true);
+              // this.setIsRegister(false);
+              return;
+            }
+          })
         },
         //修改密码
         pwdFn(){
@@ -107,13 +179,40 @@
           this.$refs.pwdTxt.style.color="skyblue";
         },
         updatePwdFn(){
+          if(!this.pwd||!this.npwd||!this.againPwd){
+            alert("请完善您的信息！");
+            return;
+          }
+          if(this.npwd!==this.againPwd){
+            alert("两次密码不一致！");
+            return;
+          }
+          if(this.npwd===this.pwd){
+            alert("新密码和旧密码不能一致！");
+            return;
+          }
+          axios.post("/user/upPwd",{
+            _id:JSON.parse(window.localStorage.getItem("userInfo"))[0].id,
+            pwd:this.md5Pwd(this.md5Pwd(this.pwd)),
+            npwd:this.md5Pwd(this.md5Pwd(this.againPwd))
+          }).then((res)=>{
+            console.log(res.data);
+            alert(res.data.msg);
+            if(res.data.code===0){
+              this.npwd='';
+              this.pwd='';
+              this.againPwd='';
+              this.$router.push("/my/login");
+            }else {
 
+            }
+          })
         },
         //加密
         md5Pwd(pwd) {
           const salt="C~·`!h@i# $传%3……12^&ks*89（m)-{:+=.,_|?><;fgf";
           return utils.md5(utils.md5(salt+pwd+salt));
-        },
+        }
       }
     }
 </script>
@@ -130,6 +229,7 @@
     z-index: 100;
   }
   .contentBox{
+    margin-top: 10px;
     overflow: hidden;
   }
   .nav{

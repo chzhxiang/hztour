@@ -20,6 +20,7 @@
           </div>
         </div>
       </scroll>
+      <p class="noBox" v-bind:style="{height:h+'px',lineHeight:h+'px'}" v-show="travelsData.length===0?true:false">您还没有游记哦~</p>
     </div>
 </template>
 
@@ -33,10 +34,12 @@
       data(){
           return{
             userName:'',
-            travelsData:[]
+            travelsData:[],
+            h:null
           }
       },
       created(){
+          this.h=window.screen.height;
         if(JSON.parse(window.localStorage.getItem("userInfo")).length>0){
           this.userName=JSON.parse(window.localStorage.getItem("userInfo"))[0].userName;
           axios.post("/travels/selTravels",{
@@ -120,6 +123,17 @@
     height: 100%;
     overflow: hidden;
     background: #fff;
+  }
+  .noBox{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    color: skyblue;
+    font-size: 1em;
+    font-weight: bolder;
+    text-align: center;
   }
   .myTravelsTitle{
     position: absolute;

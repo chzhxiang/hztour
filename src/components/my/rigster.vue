@@ -22,7 +22,7 @@
         <span class="txt">设置密保：</span><input type="text" v-model="problem"/>
       </div>
       <div class="userName">
-        <span class="txt">密保答案：</span><input type="password" v-model="answer"/>
+        <span class="txt">密保答案：</span><input type="password" v-model="answer" @keyup.enter="registerFn"/>
       </div>
       <div class="btnBox">
         <p class="register" @click="registerFn">注册</p>
@@ -90,6 +90,7 @@
               alert(res.data.msg);
               return;
             } else {
+
               if (document.getElementById('fileUp').files[0]) {
                 let form = new FormData();
                 console.log(imgFlag);
@@ -109,9 +110,12 @@
                     return;
                   } else {
                     alert('注册成功！');
+                    this.userName='';
+                    this.pwd='';
+                    this.againPwd='';
+                    this.problem='';
+                    this.answer='';
                     this.$router.push('/my/login');
-                    // this.setIsLogin(true);
-                    // this.setIsRegister(false);
                     return;
                   }
                 })

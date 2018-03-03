@@ -42,12 +42,21 @@ Router.post('/upload',(req,res)=>{
     }
     // console.log(90909090);
     console.log(fields.imgName);
-    UserImg.create({'userName':fields.name,"path":files.file.path,"img":fields.imgName},(err,data)=>{
+    UserImg.remove({"img":fields.imgName},(err,data)=>{
       if(err){
         return res.json({'code':1,'msg':err});
       }
+      console.log("remove");
+      console.log(data);
+      UserImg.create({'userName':fields.name,"path":files.file.path,"img":fields.imgName},(err,creadData)=>{
+        if(err){
+          return res.json({'code':1,'msg':err});
+        }
+        console.log("creadData");
+        console.log(creadData);
+      });
     });
-    res.json({'code':0,"avatar":files.file.path});
+    // res.json({'code':0,"avatar":files.file.path});
   });
 });
 
@@ -99,26 +108,29 @@ Router.post('/forgetup',(req,res)=>{
 
 //修改密码
 Router.post('/upPwd',(req,res)=>{
-  const {_id,pwd,nPwd}=req.body;
+  const {_id,pwd,npwd}=req.body;
   console.log(req.body);
-  // User.update({userName},{$set:{pwd}},(err,data)=>{
-  //   if(err){
-  //     return res.json({code:1,msg:err});
-  //   }
-  //   return res.json({code:0,msg:"成功！"});
-  // })
+  User.update({_id,pwd},{$set:{'pwd':npwd}},(err,data)=>{
+    if(err){
+      return res.json({code:1,msg:err});
+    }
+    if(!data){
+      return res.json({code:1,msg:"旧密码不正确！"});
+    }
+    return res.json({code:0,msg:"密码修改成功！"});
+  })
 });
 
 //修改基本信息
-Router.post('/up',(req,res)=>{
-  const {_id,userName,avatar}=req.body;
+Router.post('/upBaseInfo',(req,res)=>{
+  const {_id,userName,nUserName}=req.body;
   console.log(req.body);
-  // User.update({userName},{$set:{pwd}},(err,data)=>{
-  //   if(err){
-  //     return res.json({code:1,msg:err});
-  //   }
-  //   return res.json({code:0,msg:"成功！"});
-  // })
+  User.update({_id,userName},{$set:{'userName':nUserName}},(err,data)=>{
+    if(err){
+      return res.json({code:1,msg:err});
+    }
+    return res.json({code:0,msg:"成功！"});
+  })
 });
 
 //获取图片文件信息
@@ -132,6 +144,52 @@ Router.post('/reqAvatar',(req,res)=>{
     return res.json({code:0,msg:dataUserImg});
       console.log(dataUserImg);
     })
+});
+
+//删除头像
+Router.post('/delAvatar',(req,res)=>{
+  console.log("delAvatar");
+  const {flag}=req.body;
+  UserImg.find({'img':flag},(err,data)=> {
+    if (err) {
+      return res.json({"code": 1, "msg": err});
+    }
+    console.log("data");
+    console.log(data);
+    if(data.length>0){
+      for(let i=0;i<data.length;i++){
+        fs.unlinkSync(data[i].path,(err)=>{
+          if(err){
+            console.log(err);
+            return ;
+          }
+        });
+      }
+    }
+  });
+});
+
+//修改头像
+Router.post('/reUpload',(req,res)=>{
+  console.log("reUpload");
+  let form = new formidable.IncomingForm();
+  form.uploadDir = "./static/upload";
+  form.keepExtensions = true;
+  form.parse(req, (err, fields, files)=>{
+    if(err){
+      console.log(err);
+      return res.json({'code':1,'msg':"图片上传失败！"});
+    }
+    console.log(90909090);
+    // console.log(fields.imgName);
+    UserImg.update({'img':fields.flag},{$set:{'path':files.file.path}},(err,data)=>{
+      if(err){
+        return res.json({code:1,msg:err});
+      }
+      return res.json({code:0,msg:"成功！"});
+    });
+    res.json({'code':0,"avatar":files.file.path});
+  });
 });
 
 module.exports=Router;

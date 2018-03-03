@@ -131,6 +131,6 @@
       margin 0px
       padding 10px 0px
       width 100%
-      background #007ee0
+      background skyblue
       color #fff
 </style>

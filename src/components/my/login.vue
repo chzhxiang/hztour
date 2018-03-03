@@ -59,6 +59,7 @@
             console.log(res.data);
             if(res.data.code===0){
               let id=res.data.data[0]._id;
+              let flag=res.data.data[0].avatar;
               if(res.data.data[0].avatar){
                 console.log(67437473);
                 axios.post("/user/reqAvatar",{
@@ -68,7 +69,8 @@
                     window.localStorage.setItem("userInfo",JSON.stringify([{
                       userName:this.loginName,
                       avatar:resagain.data.msg.path,
-                      id:id
+                      id:id,
+                      flag:flag
                     }]));
                     alert("登录成功！");
                     this.setLoginSuccess(true);
