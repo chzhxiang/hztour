@@ -54,6 +54,7 @@ Router.post('/upload',(req,res)=>{
         }
         console.log("creadData");
         console.log(creadData);
+        return res.json({'code':0,'msg':'成功'});
       });
     });
     // res.json({'code':0,"avatar":files.file.path});

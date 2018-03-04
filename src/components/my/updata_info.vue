@@ -103,12 +103,13 @@
             form.append('name', this.userName);
             form.append("file", document.getElementById('fileUp').files[0]);
             axios.post("/user/upload", form, config).then((res) => {
-              // console.log(res.data);
+              console.log("修改图片");
+              console.log(res.data);
               if (res.data.code === 1){
-                alert('图片上传失败,请重试！');
+                alert('图片修改失败,请重试！');
                 return;
               } else {
-                alert('图片上传成功！');
+                alert('图片修改成功！');
                 return;
               }
             })

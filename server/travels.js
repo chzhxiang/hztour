@@ -76,7 +76,7 @@ Router.post('/delFile',(req,res)=>{
   });
 });
 
-//查游记
+//查个人游记
 Router.post('/selTravels',(req,res)=>{
   Travels.find({author:req.body.author},(err,data)=> {
     if(err){
@@ -86,6 +86,15 @@ Router.post('/selTravels',(req,res)=>{
   });
 });
 
+//查全部游记
+Router.post('/selAllTravels',(req,res)=>{
+  Travels.find((err,data)=> {
+    if(err){
+      return res.json({'code':1,'msg':err});
+    }
+    return res.json({'code':0,'data':data});
+  });
+});
 //查图片
 Router.post('/selTravelsimg',(req,res)=>{
   const {flag}=req.body;
