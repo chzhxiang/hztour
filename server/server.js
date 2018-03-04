@@ -5,6 +5,8 @@ const io=require('socket.io')(server);
 const bodyParser=require('body-parser');
 const userRouter=require('./user');
 const travelsRouter=require('./travels');
+const collectionRouter=require('./collection');
+const attentionRouter=require('./attention');
 
 app.all('*',(req, res, next)=>{
   res.header("Access-Control-Allow-Methods", "POST");
@@ -17,6 +19,8 @@ app.use(bodyParser());
 
 app.use('/user',userRouter);
 app.use('/travels',travelsRouter);
+app.use('/collection',collectionRouter);
+app.use('/attention',attentionRouter);
 
 io.on('connection',(socket)=>{
   socket.on('sendmsg',(data)=>{

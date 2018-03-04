@@ -16,11 +16,13 @@ const models={
     'img':{'type':String,'require':true}
   },
   collection:{
-    'author':{'type':String,'require':true},
+    'articleId':{'type':String,'require':true},
+    'authorId':{'type':String,'require':true},
     'articleName':{'type':String,'require':true},
     'articleImg':{'type':String}
   },
   attention:{
+    'authorId':{'type':String,'require':true},
     'author':{'type':String,'require':true},
     'authorImg':{'type':String}
   },

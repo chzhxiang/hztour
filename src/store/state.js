@@ -6,6 +6,8 @@ const state={
     author:'',
     flag:''
   },
-  loginSuccess:false
+  loginSuccess:false,
+  travelsDateil:{},
+  travelsDateilShow:false
 }
 export default state;

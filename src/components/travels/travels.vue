@@ -1,5 +1,6 @@
 <template>
     <div>
+      <travels-detail></travels-detail>
       <scroll :data="bannerImg" v-bind:style="{height:(h-92)+'px',overflow:'hidden'}">
         <div>
           <div class="sliderBox" @click="aa">
@@ -19,7 +20,7 @@
           <div class="content">
             <div class="listItem" v-for="listItem in listData" @click="getList(listItem)">
               <div class="itemImg">
-                <img :src="listItem.img"/>
+                <img :src="listItem.img.length>0?listItem.img[0].path:''"/>
               </div>
               <div class="itemTxt">
                 <p v-bind:style="{width:(w-70)+'px'}">{{listItem.title}}</p>
@@ -40,6 +41,8 @@
   import Scroll from "@/base/scroll/scroll";
   import Slider from "@/base/slider/slider";
   import axios from "axios";
+  import TravelsDetail from "@/components/travels/travels_detail";
+  import {mapGetters,mapMutations} from "vuex";
     export default {
         name: "travels",
       data(){
@@ -80,7 +83,8 @@
       components:{
         Carousel,
         Scroll,
-        Slider
+        Slider,
+        TravelsDetail
       },
       methods:{
           //初始化
@@ -123,7 +127,7 @@
                 let title=res.data.data[i].articleName;
                 let timer=res.data.data[i].articleTime;
                 let user=res.data.data[i].author;
-                let content=res.data.data[i].
+                let content=res.data.data[i].articleContent;
                 console.log(i);
                 axios.post("/travels/selTravelsimg",{
                   flag:res.data.data[i].flag
@@ -138,7 +142,8 @@
                         title:title,
                         timer:timer,
                         author:user,
-                        img:resImg.data.data[0].path
+                        content:content,
+                        img:resImg.data.data
                       })
                     }else {
                       this.listData.push({
@@ -147,7 +152,8 @@
                         title:title,
                         timer:timer,
                         author:user,
-                        img:''
+                        content:content,
+                        img:[]
                       })
                     }
                   }
@@ -196,13 +202,19 @@
           this.animation(this.lis[this.num],0);
           // light();
         },
-        //
+        //游记点击事件
         getList(listItem){
-          console.log(listItem);
+          // console.log(listItem);
+          this.setTravelsDateil(listItem);
+          this.setTravelsDateilShow(true);
         },
         getListDetail(val){
 
-        }
+        },
+        ...mapMutations({
+          setTravelsDateil:"SET_TRAVELSDATEIL",
+          setTravelsDateilShow:"SET_TRAVELSDATEILSHOW"
+        })
       }
     }
 </script>

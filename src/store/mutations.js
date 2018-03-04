@@ -5,6 +5,12 @@ const mutations={
   },
   [types.SET_LOGINSUCCESS](state,loginSuccess){
     state.loginSuccess=loginSuccess;
+  },
+  [types.SET_TRAVELSDATEIL](state,travelsDateil){
+    state.travelsDateil=travelsDateil;
+  },
+  [types.SET_TRAVELSDATEILSHOW](state,travelsDateilShow){
+    state.travelsDateilShow=travelsDateilShow;
   }
 };
 export default mutations;
