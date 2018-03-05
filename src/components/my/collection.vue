@@ -4,7 +4,7 @@
         <img src="http://localhost:8080/static/icon/back.png" class="backIcon" @click="backFn"/>
         <p class="myTravelsTitle">我的收藏</p>
       </div>
-      <scroll>
+      <scroll v-bind:style="{height:(h-32)+'px'}" class="scrollCollenction" :data="collectionData">
         <div class="collectionContenBox">
           <div class="collectionItem"
                v-for="(item,index) in collectionData">
@@ -30,10 +30,12 @@
         name: "collection",
       data(){
           return{
-            collectionData:[]
+            collectionData:[],
+            h:null
           }
       },
       created(){
+        this.h=window.screen.height;
         if(window.localStorage.getItem("userInfo")){
           console.log("34343");
           axios.post("/collection/selCollection",{
@@ -166,6 +168,9 @@
     width: 100%;
     font-size: 1.2em;
     /*z-index: -1;*/
+  }
+  .scrollCollenction{
+    overflow: hidden;
   }
   .collectionContenBox{
     padding: 0px 5px;

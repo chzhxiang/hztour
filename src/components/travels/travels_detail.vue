@@ -111,14 +111,10 @@
       },
       watch:{
         travelsDateilShow(val){
-          // console.log("val");
           this.str="";
           for(let i=0;i<this.travelsDateil.img.length;i++){
-            // console.log(i);
             this.str+="<div style='width: 200px;height: 200px;float: left;overflow: hidden;margin: 5px;line-height: 200px;'><img src='"+this.travelsDateil.img[i].path+"' style='width: 200px;'/></div>";
           }
-          // console.log("str");
-          // console.log(this.str);
           document.getElementById('travelsImg').innerHTML=this.str;
         }
       }
