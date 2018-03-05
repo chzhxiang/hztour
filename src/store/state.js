@@ -8,6 +8,7 @@ const state={
   },
   loginSuccess:false,
   travelsDateil:{},
-  travelsDateilShow:false
+  travelsDateilShow:false,
+  writeTravels:false
 }
 export default state;

@@ -42,8 +42,9 @@
           this.h=window.screen.height;
         if(JSON.parse(window.localStorage.getItem("userInfo")).length>0){
           this.userName=JSON.parse(window.localStorage.getItem("userInfo"))[0].userName;
+          console.log(JSON.parse(window.localStorage.getItem("userInfo"))[0].id);
           axios.post("/travels/selTravels",{
-            author:this.userName
+            authorId:JSON.parse(window.localStorage.getItem("userInfo"))[0].id
           }).then((res)=>{
             console.log("weweew");
             console.log(res.data);
@@ -58,8 +59,8 @@
             }
           })
         }else {
-          alert("您还未登录，请先登录！");
-          this.$router.push("/my");
+          alert("您还未登录，请前往登录！");
+          this.$router.push("/my/login");
           return;
         }
       },
@@ -75,7 +76,7 @@
         delTravels(val,index){
           // console.log(val);
           axios.post("/travels/delTravels",{
-            articleName:val.articleName
+            _id:val._id
           }).then((res)=>{
             if(res.data.code===0){
               alert(res.data.msg);

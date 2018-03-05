@@ -15,8 +15,8 @@
         <span @click="goWriteTravels">写游记</span>
       </p>
       <p @click="myTravels"><img src="http://localhost:8080/static/icon/myEdit.png"/>我的游记</p>
-      <p><img src="http://localhost:8080/static/icon/collection.png"/>我的收藏</p>
-      <p><img src="http://localhost:8080/static/icon/follow.png"/>我的关注</p>
+      <p @click="collectionFn"><img src="http://localhost:8080/static/icon/collection.png"/>我的收藏</p>
+      <p @click="followFn"><img src="http://localhost:8080/static/icon/follow.png"/>我的关注</p>
       <p class="out" @click="outLoginFn">退出登录</p>
     </div>
   </div>
@@ -34,9 +34,10 @@
           }
       },
       created(){
-        if(JSON.parse(window.localStorage.getItem("userInfo")).length>0){
+        if(window.localStorage.getItem("userInfo")){
           this.userName=JSON.parse(window.localStorage.getItem("userInfo"))[0].userName;
           this.userImg=JSON.parse(window.localStorage.getItem("userInfo"))[0].avatar;
+          console.log("my");
         }
         // console.log(window.localStorage.getItem("userInfo"));
       },
@@ -55,9 +56,18 @@
             this.$router.push('/my/updataInfo');
           }
         },
+        //收藏
+        collectionFn(){
+          this.$router.push("/my/collection");
+        },
+        //关注
+        followFn(){
+          this.$router.push("/my/attention");
+        },
         //写游记
         goWriteTravels(){
           if(this.userName) {
+            this.setWriteTravels(true);
             this.$router.push('/my/writeTravels');
           }
         },
@@ -66,16 +76,14 @@
           this.$router.push("/my/myTravels");
         },
         outLoginFn(){
-          window.localStorage.setItem("userInfo",JSON.stringify([{
-            userName:'',
-            avatar:''
-          }]));
+          window.localStorage.setItem("userInfo",'');
           this.userImg='';
           this.userName='';
           this.setLoginSuccess(false);
         },
         ...mapMutations({
-          setLoginSuccess:"SET_LOGINSUCCESS"
+          setLoginSuccess:"SET_LOGINSUCCESS",
+          setWriteTravels:"SET_WRITETRAVELS"
         })
       },
       watch:{

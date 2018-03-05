@@ -18,6 +18,10 @@ import WriteTravels from "@/components/my/write_travels";
 import MyTravels from "@/components/my/my_travels";
 //编辑
 import UpdataTravels from "@/components/my/updata_travels";
+//收藏
+import Collection from "@/components/my/collection";
+//关注
+import Attention from "@/components/my/attention";
 
 Vue.use(VueRouter);
 export default new VueRouter({
@@ -37,6 +41,12 @@ export default new VueRouter({
     },{
       path:"/my",
       component:My
+    },{
+      path:'/my/attention',
+      component:Attention
+    },{
+      path:'/my/collection',
+      component:Collection
     },{
       path:'/my/login',
       component:Login

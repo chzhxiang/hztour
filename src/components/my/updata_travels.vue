@@ -56,7 +56,7 @@
         console.log('name');
         console.log(JSON.parse(window.localStorage.getItem("userInfo")).length>0);
         console.log(JSON.parse(window.localStorage.getItem("userInfo"))[0].userName);
-        if(JSON.parse(window.localStorage.getItem("userInfo")).length>0){
+        if(window.localStorage.getItem("userInfo")){
           this.userName=JSON.parse(window.localStorage.getItem("userInfo"))[0].userName;
           this.init();
         }else {

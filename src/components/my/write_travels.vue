@@ -40,6 +40,7 @@
   import axios from "axios";
   //scroll
   import Scroll from "@/base/scroll/scroll";
+  import {mapMutations,mapGetters} from "vuex";
     export default {
         name: "write_travels",
       data(){
@@ -55,10 +56,10 @@
       created(){
           this.h=window.screen.height;
           console.log(this.h);
-          console.log('name');
+          console.log('writecreated');
           console.log(JSON.parse(window.localStorage.getItem("userInfo")).length>0);
           console.log(JSON.parse(window.localStorage.getItem("userInfo"))[0].userName);
-        if(JSON.parse(window.localStorage.getItem("userInfo")).length>0){
+        if(JSON.parse(window.localStorage.getItem("userInfo"))[0].userName){
           this.userName=JSON.parse(window.localStorage.getItem("userInfo"))[0].userName;
           this.imgFlag=this.userName+''+new Date().getFullYear()+'-'+new Date().getMonth()+'-'+new Date().getDate()+' '+new Date().getHours()+':'+new Date().getMinutes()+':'+new Date().getSeconds()+' '+Math.random()+' '+Math.random();
           console.log(this.imgFlag);
@@ -66,6 +67,9 @@
           alert('您的状态未登录状态，请前往登录！');
           return;
         }
+      },
+      computed:{
+        ...mapGetters(['writeTravels'])
       },
       components:{
         quillEditor,
@@ -126,6 +130,13 @@
             alert('游记内容不能为空！');
             return;
           }
+          if(JSON.parse(window.localStorage.getItem("userInfo"))[0].userName){
+
+          }else {
+            alert('您还未登录，请前往登录！');
+            this.$router.push("/my/login");
+            return;
+          }
           // author,articleName,articleContent,articleImg,articleTime
           let editTime=new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate();
           //if(!document.getElementById('turismPicture').files[0]){
@@ -133,6 +144,7 @@
           //}
           axios.post('/travels/register',{
             author:this.userName,
+            authorId:JSON.parse(window.localStorage.getItem("userInfo"))[0].id,
             articleName:this.editTitle,
             articleContent:this.editContent,
             flag:this.imgFlag,
@@ -169,7 +181,26 @@
         //返回
         backFn(){
           window.history.back();
+          this.setWriteTravels(false);
           // this.$router.push("/my");
+        },
+        ...mapMutations({
+          setWriteTravels:"SET_WRITETRAVELS"
+        })
+      },
+      watch:{
+        writeTravels(val){
+          if(val){
+            console.log('writewatch');
+            if(JSON.parse(window.localStorage.getItem("userInfo"))[0].userName){
+              this.userName=JSON.parse(window.localStorage.getItem("userInfo"))[0].userName;
+              this.imgFlag=this.userName+''+new Date().getFullYear()+'-'+new Date().getMonth()+'-'+new Date().getDate()+' '+new Date().getHours()+':'+new Date().getMinutes()+':'+new Date().getSeconds()+' '+Math.random()+' '+Math.random();
+              console.log(this.imgFlag);
+            }else {
+              alert('您的状态未登录状态，请前往登录！');
+              return;
+            }
+          }
         }
       }
     }

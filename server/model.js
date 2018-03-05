@@ -17,17 +17,17 @@ const models={
   },
   collection:{
     'articleId':{'type':String,'require':true},
-    'authorId':{'type':String,'require':true},
+    'userId':{'type':String,'require':true},
     'articleName':{'type':String,'require':true},
     'articleImg':{'type':String}
   },
   attention:{
     'authorId':{'type':String,'require':true},
-    'author':{'type':String,'require':true},
-    'authorImg':{'type':String}
+    'userId':{'type':String,'require':true}
   },
   travels:{
     'author':{'type':String,'require':true},
+    'authorId':{'type':String,'require':true},
     'articleName':{'type':String,'require':true},
     'articleContent':{'type':String,'require':true},
     'flag':{'type':String},

@@ -80,6 +80,19 @@ Router.post('/login',(req,res)=>{
   })
 });
 
+//根据_id查用户信息
+Router.post('/selUser',(req,res)=>{
+  const {_id}=req.body;
+  console.log(req.body);
+  User.find({_id},{pwd:0,__v:0,answer:0,problem:0},(err,data)=>{
+    if(err){
+      res.json({code:1,msg:err});
+      return ;
+    }
+    return res.json({code:0,data:data});
+  })
+});
+
 //忘记密码
 Router.post('/forget',(req,res)=>{
   const {userName,problem,answer}=req.body;

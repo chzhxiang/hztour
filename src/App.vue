@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <travels-detail></travels-detail>
     <hz-header/>
     <tab/>
     <!--<rigster v-if="isRegister"/>-->
@@ -25,6 +26,7 @@
   import ForgetPwd from "@/components/my/forget_pwd";
   //vuex
   import {mapGetters} from "vuex";
+  import TravelsDetail from "@/components/travels/travels_detail";
 export default {
   name: 'App',
   data(){
@@ -37,7 +39,8 @@ export default {
     Tab,
     Login,
     Rigster,
-    ForgetPwd
+    ForgetPwd,
+    TravelsDetail
   },
   created(){
     this.deatList=tourData;

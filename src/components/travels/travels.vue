@@ -1,6 +1,5 @@
 <template>
     <div>
-      <travels-detail></travels-detail>
       <scroll :data="bannerImg" v-bind:style="{height:(h-92)+'px',overflow:'hidden'}">
         <div>
           <div class="sliderBox" @click="aa">
@@ -41,7 +40,6 @@
   import Scroll from "@/base/scroll/scroll";
   import Slider from "@/base/slider/slider";
   import axios from "axios";
-  import TravelsDetail from "@/components/travels/travels_detail";
   import {mapGetters,mapMutations} from "vuex";
     export default {
         name: "travels",
@@ -83,11 +81,10 @@
       components:{
         Carousel,
         Scroll,
-        Slider,
-        TravelsDetail
+        Slider
       },
       methods:{
-          //初始化
+          //轮播图数据初始化
         init(){
           axios.post("/travels/selAllTravels").then((res)=>{
             console.log("游记");
@@ -115,7 +112,7 @@
             }
           })
         },
-        //listinit
+        //游记数据初始化
         listInit(){
           axios.post("/travels/selAllTravels").then((res)=>{
             console.log("游记list");
@@ -133,7 +130,7 @@
                   flag:res.data.data[i].flag
                 }).then((resImg)=>{
                   console.log("listData");
-                  console.log(resImg.data);
+                  console.log(resImg.data.data[0].path);
                   if(resImg.data.code===0){
                     if(resImg.data.data.length>0){
                       this.listData.push({

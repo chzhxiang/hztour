@@ -11,6 +11,9 @@ const mutations={
   },
   [types.SET_TRAVELSDATEILSHOW](state,travelsDateilShow){
     state.travelsDateilShow=travelsDateilShow;
+  },
+  [types.SET_WRITETRAVELS](state,writeTravels){
+    state.writeTravels=writeTravels;
   }
 };
 export default mutations;

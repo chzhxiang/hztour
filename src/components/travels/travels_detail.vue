@@ -49,14 +49,14 @@
       },
       created(){
         if(this.travelsDateilShow){
-          console.log(this.travelsDateilShow);
+          // console.log(this.travelsDateilShow);
           this.str="";
           for(let i=0;i<this.travelsDateil.img.length;i++){
-            console.log(i);
+            // console.log(i);
             this.str+="<div style='width: 200px;height: 200px;float: left;overflow: hidden;margin: 5px;line-height: 200px;'><img src='"+this.travelsDateil.img[i].path+"' style='width: 200px;'/></div>";
           }
-          console.log("str");
-          console.log(this.str);
+          // console.log("str");
+          // console.log(this.str);
           document.getElementById('travelsImg').innerHTML=this.str;
         }
       },
@@ -69,32 +69,56 @@
         },
         //收藏
         collectionFn(){
+          if(!window.localStorage.getItem("userInfo")){
+            alert("您还未登录，请前往登录！");
+            this.$router.push('/my/login');
+            return;
+          }
           axios.post("/collection/addCollection",{
-            articleId:'',
-            authorId:'',
-            articleName:'',
-            articleImg:''
+            articleId:this.travelsDateil.id,
+            userId:JSON.parse(window.localStorage.getItem("userInfo"))[0].id,
+            articleName:this.travelsDateil.title,
+            articleImg:this.travelsDateil.img
           }).then((res)=>{
-
+            console.log(res.data);
+            if(res.data.code===0){
+              alert("收藏成功，前往我的收藏即可查看！")
+            }else {
+              alert(res.data.msg);
+            }
           })
           console.log("collectionFn");
         },
+        //关注
         followFn(){
+          if(JSON.parse(window.localStorage.getItem("userInfo")).length===0){
+            alert("您还未登录，请前往登录！");
+            this.$router.push('/my/login');
+            return;
+          }
           console.log("followFn");
+          console.log(this.travelsDateil.author);
+          axios.post("/attention/addAttention",{
+            authorId:this.travelsDateil.author,
+            userId:JSON.parse(window.localStorage.getItem("userInfo"))[0].id
+          }).then((res)=>{
+            console.log(res.data);
+          })
         },
         ...mapMutations({
           setTravelsDateilShow:"SET_TRAVELSDATEILSHOW"
         })
       },
-      wacth:{
+      watch:{
         travelsDateilShow(val){
+          // console.log("val");
           this.str="";
           for(let i=0;i<this.travelsDateil.img.length;i++){
-            console.log(i);
+            // console.log(i);
             this.str+="<div style='width: 200px;height: 200px;float: left;overflow: hidden;margin: 5px;line-height: 200px;'><img src='"+this.travelsDateil.img[i].path+"' style='width: 200px;'/></div>";
           }
-          console.log("str");
-          console.log(this.str);
+          // console.log("str");
+          // console.log(this.str);
           document.getElementById('travelsImg').innerHTML=this.str;
         }
       }
@@ -127,7 +151,7 @@
     top 0px
     left 0px
     height 100%
-    z-index 100
+    z-index 110
     width 100%
     background #fff
   .listDetailTitle

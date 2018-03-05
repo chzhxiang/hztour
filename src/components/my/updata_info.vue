@@ -65,7 +65,7 @@
           }
       },
       created(){
-        if(JSON.parse(window.localStorage.getItem("userInfo")).length>0){
+        if(window.localStorage.getItem("userInfo")){
           this.userName=JSON.parse(window.localStorage.getItem("userInfo"))[0].userName;
           this.userImg=JSON.parse(window.localStorage.getItem("userInfo"))[0].avatar;
           this.id=JSON.parse(window.localStorage.getItem("userInfo"))[0].id;

@@ -8,3 +8,5 @@ export const loginSuccess=state=>state.loginSuccess;
 export const travelsDateil=state=>state.travelsDateil;
 //游记显示
 export const travelsDateilShow=state=>state.travelsDateilShow;
+//写游记
+export const writeTravels=state=>state.writeTravels;

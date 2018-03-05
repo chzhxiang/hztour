@@ -16,8 +16,8 @@ Router.post('/register',(req,res)=>{
     if (data.length > 0) {
       return res.json({code: 1, msg: "该文章名已存在！"});
     }else {
-      let {author,articleName,articleContent,flag,articleTime}=req.body;
-      Travels.create({author,articleName,articleContent,flag,articleTime},(err,travelsInfo)=> {
+      let {author,authorId,articleName,articleContent,flag,articleTime}=req.body;
+      Travels.create({author,authorId,articleName,articleContent,flag,articleTime},(err,travelsInfo)=> {
         if (err) {
           return res.json({code: 1, msg: err});
         }
@@ -76,9 +76,20 @@ Router.post('/delFile',(req,res)=>{
   });
 });
 
+//根据_id查游记
+Router.post('/selIdTravels',(req,res)=>{
+  const {_id}=req.body;
+  Travels.find({_id},(err,data)=> {
+    if(err){
+      return res.json({'code':1,'msg':err});
+    }
+    return res.json({'code':0,'data':data});
+  });
+});
+
 //查个人游记
 Router.post('/selTravels',(req,res)=>{
-  Travels.find({author:req.body.author},(err,data)=> {
+  Travels.find({authorId:req.body.authorId},(err,data)=> {
     if(err){
       return res.json({'code':1,'msg':err});
     }
@@ -108,8 +119,8 @@ Router.post('/selTravelsimg',(req,res)=>{
 
 //删除
 Router.post('/delTravels',(req,res)=>{
-  const {articleName}=req.body;
-  Travels.remove({articleName},(err,data)=>{
+  const {_id}=req.body;
+  Travels.remove({_id},(err,data)=>{
     if(err){
       return res.json({'code':1,'msg':err});
     }
