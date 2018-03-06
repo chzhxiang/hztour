@@ -22,7 +22,10 @@
                 </p>
               </div>
             </div>
-            <div id="travelsImg" v-html="str" v-bind:style="{overflow:'hidden',height: travelsDateil.img.length===0?'0px':'200px',background: '#fff',width:(travelsDateil.img.length*210)+'px'}"></div>
+            <div id="travelsImg"
+                 v-html="str"
+                 v-bind:style="{overflow:'hidden',height: travelsDateil.img.length===0?'0px':'200px',background: '#fff',width:(travelsDateil.img.length*210)+'px'}">
+            </div>
             <div class="article">
               <p>{{travelsDateil.content}}</p>
             </div>
@@ -99,10 +102,15 @@
           console.log("followFn");
           console.log(this.travelsDateil.author);
           axios.post("/attention/addAttention",{
-            authorId:this.travelsDateil.author,
+            authorId:this.travelsDateil.authorId,
             userId:JSON.parse(window.localStorage.getItem("userInfo"))[0].id
           }).then((res)=>{
             console.log(res.data);
+            if(res.data.code===0){
+              alert("关注成功，可前往我的关注查看！");
+            }else {
+              alert(res.data.msg);
+            }
           })
         },
         ...mapMutations({

@@ -124,6 +124,7 @@
                 let title=res.data.data[i].articleName;
                 let timer=res.data.data[i].articleTime;
                 let user=res.data.data[i].author;
+                let userId=res.data.data[i].authorId;
                 let content=res.data.data[i].articleContent;
                 console.log(i);
                 axios.post("/travels/selTravelsimg",{
@@ -139,6 +140,7 @@
                         title:title,
                         timer:timer,
                         author:user,
+                        authorId:userId,
                         content:content,
                         img:resImg.data.data
                       })
@@ -149,6 +151,7 @@
                         title:title,
                         timer:timer,
                         author:user,
+                        authorId:userId,
                         content:content,
                         img:[]
                       })

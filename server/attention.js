@@ -40,4 +40,18 @@ Router.post('/selAttention',(req,res)=>{
   });
 });
 
+//删除关注
+Router.post('/delAttention',(req,res)=>{
+  console.log('selCollection');
+  console.log(req.body);
+  const {userId,authorId}=req.body;
+  Attention.remove({userId,authorId},(err,data)=> {
+    if (err) {
+      return res.json({"code": 1, "msg": err});
+    }
+    console.log(data.length);
+    return res.json({code: 0, 'msg': '删除成功！'});
+  });
+});
+
 module.exports=Router;
