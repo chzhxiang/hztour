@@ -62,20 +62,20 @@
         this.init();
         this.listInit();
         setTimeout(()=>{
-          this.imgWidth=window.screen.width;
-          // console.log("imgWidth="+this.imgWidth);
-          for(let i=0;i<this.bannerImg.length;i++){
-            // console.log("i="+i);
-            this.lis.push(document.getElementById(this.itemId+i));
-            // console.log(this.lis[i]);
-            this.lis[i].style.left=this.imgWidth+'px';
-          }
-          this.lis[0].style.left=0+"px";
+          // this.imgWidth=window.screen.width;
+          // // console.log("imgWidth="+this.imgWidth);
+          // for(let i=0;i<this.bannerImg.length;i++){
+          //   // console.log("i="+i);
+          //   this.lis.push(document.getElementById(this.itemId+i));
+          //   // console.log(this.lis[i]);
+          //   this.lis[i].style.left=this.imgWidth+'px';
+          // }
+          // this.lis[0].style.left=0+"px";
           // console.log(this.bannerImg.length);
           // console.log("lis="+this.lis);
-          this.timerAll=setInterval(()=>{
-            this.autoplay();
-          },2000);
+          // this.timerAll=setInterval(()=>{
+          //   this.autoplay();
+          // },2000);
         },1000);
       },
       components:{
@@ -94,12 +94,14 @@
                 if(i>4){
                   break;
                 }
+                console.log("flag");
                 let flag=res.data.data[i].flag;
+                // console.log("flag);
                 let id=res.data.data[i]._id;
                 axios.post("/travels/selTravelsimg",{
-                  flag:res.data.data[i].flag
+                  flag:flag
                 }).then((resImg)=>{
-                  // console.log(resImg.data);
+                  console.log(resImg.data);
                   if(resImg.data.code===0){
                     this.bannerImg.push({
                       flag:flag,

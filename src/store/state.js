@@ -9,6 +9,7 @@ const state={
   loginSuccess:false,
   travelsDateil:{},
   travelsDateilShow:false,
-  writeTravels:false
+  writeTravels:false,
+  attentionData:{}
 }
 export default state;

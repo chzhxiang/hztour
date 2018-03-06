@@ -7,11 +7,11 @@
       <scroll>
         <div>
           <div class="itemBox" v-for="(item,index) in userArr">
-            <p class="itemImg">
+            <p class="itemImg" @click="userInfo(item)">
               <img :src="item.img"/>
             </p>
             <div class="itemDateil">
-              <p>{{item.userName}}</p>
+              <p @click="userInfo(item)">{{item.userName}}</p>
               <p @click="userDel(item,index)">删除</p>
             </div>
           </div>
@@ -23,6 +23,7 @@
 <script>
   import Scroll from "@/base/scroll/scroll";
   import axios from "axios";
+  import {mapMutations} from "vuex"
     export default {
         name: "attention",
       data(){
@@ -104,7 +105,14 @@
               }
             }
           });
-        }
+        },
+        userInfo(val){
+          this.setAttentionData(val);
+          this.$router.push("/travels/userTravelsList");
+        },
+        ...mapMutations({
+          setAttentionData:"SET_ATTENTIONDATA"
+        })
       }
     }
 </script>
@@ -117,7 +125,7 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background: #e5e5e5;
+    background: #f5f5f5;
     z-index: 100;
   }
   .backBox{

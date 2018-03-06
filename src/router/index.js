@@ -22,6 +22,8 @@ import UpdataTravels from "@/components/my/updata_travels";
 import Collection from "@/components/my/collection";
 //关注
 import Attention from "@/components/my/attention";
+//关注用户列表
+import UserTravelsList from "@/components/travels/user_travels_list"
 
 Vue.use(VueRouter);
 export default new VueRouter({
@@ -32,6 +34,9 @@ export default new VueRouter({
     },{
       path:"/travels",
       component:Travels
+    },{
+      path:'/travels/userTravelsList',
+      component:UserTravelsList
     },{
       path:"/viewspot",
       component:Viewspot

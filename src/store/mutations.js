@@ -14,6 +14,9 @@ const mutations={
   },
   [types.SET_WRITETRAVELS](state,writeTravels){
     state.writeTravels=writeTravels;
+  },
+  [types.SET_ATTENTIONDATA](state,attentionData){
+    state.attentionData=attentionData;
   }
 };
 export default mutations;

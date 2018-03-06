@@ -36,6 +36,20 @@ const models={
   travelsImg:{
     'path':{'type':String,'require':true},
     'flag':{'type':String,'require':true}
+  },
+  admin:{
+    'userName':{'type':String,'require':true},
+    'pwd':{'type':String,'require':true}
+  },
+  viewSpot:{
+    'authorId':{'type':String,'require':true},
+    'articleName':{'type':String,'require':true},
+    'articleContent':{'type':String,'require':true},
+    'flag':{'type':String}
+  },
+  viewSpotImg:{
+    'path':{'type':String,'require':true},
+    'flag':{'type':String,'require':true}
   }
 }
 
