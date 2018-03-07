@@ -45,6 +45,7 @@ const models={
     'authorId':{'type':String,'require':true},
     'articleName':{'type':String,'require':true},
     'articleContent':{'type':String,'require':true},
+	  'season':{'type':String,'require':true},
     'flag':{'type':String}
   },
   viewSpotImg:{

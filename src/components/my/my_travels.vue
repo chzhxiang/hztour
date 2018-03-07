@@ -159,6 +159,7 @@
     box-shadow: 0px 0px 2px rgba(128,128,128,0.3);
     font-size: 0.875em;
     margin-top: 15px;
+    background: rgba(135,206,235,0.1);
   }
   .travelsItemTitle{
     border-bottom: 1px solid rgba(128,128,128,0.3);
@@ -170,7 +171,8 @@
   }
   .travelsItemContent{
     padding: 5px;
-    height: 100px;
+    height: auto;
+    max-height: 100px;
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: pre-line;

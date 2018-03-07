@@ -7,6 +7,7 @@ const userRouter=require('./user');
 const travelsRouter=require('./travels');
 const collectionRouter=require('./collection');
 const attentionRouter=require('./attention');
+const viewSpotRouter=require('./viewSpot');
 
 app.all('*',(req, res, next)=>{
   res.header("Access-Control-Allow-Methods", "POST");
@@ -21,22 +22,23 @@ app.use('/user',userRouter);
 app.use('/travels',travelsRouter);
 app.use('/collection',collectionRouter);
 app.use('/attention',attentionRouter);
+app.use('/viewSpot',viewSpotRouter);
 
-io.on('connection',(socket)=>{
-  socket.on('sendmsg',(data)=>{
-    const {from,to,msg}=data;
-    const chatid=[from,to].sort().join('_');
-    Chat.create({chatid,from,to,content:msg,'create_time':new Date().getTime()},(err,doc)=>{
-      if(err){
-        console.log(err);
-        return ;
-      }
-      if(!err){
-        return io.emit("recvmsg",doc);
-      }
-    })
-  })
-})
+// io.on('connection',(socket)=>{
+//   socket.on('sendmsg',(data)=>{
+//     const {from,to,msg}=data;
+//     const chatid=[from,to].sort().join('_');
+//     Chat.create({chatid,from,to,content:msg,'create_time':new Date().getTime()},(err,doc)=>{
+//       if(err){
+//         console.log(err);
+//         return ;
+//       }
+//       if(!err){
+//         return io.emit("recvmsg",doc);
+//       }
+//     })
+//   })
+// })
 
 server.listen(9090,"localhost",()=>{
   console.log('node app start at port 9090');

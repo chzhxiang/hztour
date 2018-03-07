@@ -3,7 +3,8 @@ const formidable=require('formidable');
 const fs=require('fs');
 const Router=express.Router();
 const User=require('./model').getModel('user');
-const UserImg=require('./model').getModel('userImg')
+const UserImg=require('./model').getModel('userImg');
+const Admin=require('./model').getModel('admin');
 
 //注册
 Router.post('/register',(req,res)=>{
@@ -27,6 +28,49 @@ Router.post('/register',(req,res)=>{
       });
     }
   });
+});
+
+//管理员注册
+Router.post('/adminRegister',(req,res)=>{
+  console.log('adminRegister');
+  Admin.find({userName:req.body.userName},(err,data)=> {
+    if (err) {
+      return res.json({"code": 1, "msg": err});
+    }
+    console.log(data.length);
+    if (data.length > 0) {
+      return res.json({code: 1, msg: "该昵称已存在！"});
+    }else {
+      let {userName,pwd}=req.body;
+      Admin.create({userName,pwd},(err,registerInfo)=> {
+        if (err) {
+
+          return res.json({code: 1, msg: "注册失败请重新注册！"});
+        }
+        const _id = registerInfo._id;
+        return res.json({code: 0, data: {userName, _id}});
+      });
+    }
+  });
+});
+
+//管理员登录
+Router.post('/adminLogin',(req,res)=>{
+  const {userName,pwd}=req.body;
+  console.log(req.body);
+  Admin.find({userName,"pwd":pwd},{pwd:0,__v:0,answer:0,problem:0},(err,data)=>{
+    if(err){
+      res.json({code:1,msg:err});
+      return ;
+    }
+    console.log("login");
+    console.log(data);
+    if(data.length===0){
+      res.json({code:1,msg:"用户名和密码不匹配！"});
+      return ;
+    }
+    return res.json({code:0,data:data});
+  })
 });
 
 //上传文件
