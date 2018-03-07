@@ -2,7 +2,9 @@
     <div>
       <scroll :data="viewspotData" v-bind:style="{height:(h-92)+'px',overflow:'hidden'}">
         <div class="viewConten">
-          <div v-for="item in viewspotData" class="viewItem" v-bind:style="{paddingBottom:5*viewspotData.length+'px'}">
+          <div v-for="item in viewspotData" class="viewItem"
+               @click="getView(item)"
+               v-bind:style="{paddingBottom:5*viewspotData.length+'px'}">
             <img :src="item.img.length>0?item.img[0].path:''"/>
             <p class="title">{{item.articleName}}</p>
             <p class="dateil">{{item.articleContent}}</p>
@@ -16,6 +18,7 @@
 <script>
   import axios from "axios";
   import Scroll from "@/base/scroll/scroll";
+  import {mapMutations} from "vuex"
     export default {
         name: "viewspot",
       data(){
@@ -70,7 +73,13 @@
         Scroll
       },
       methods:{
-
+        getView(val){
+          this.$router.push("/viewspotDetail");
+          this.setViewSpotDetail(val);
+        },
+        ...mapMutations({
+          setViewSpotDetail:"SET_VIEWSPOTDETAIL"
+        })
       }
     }
 </script>

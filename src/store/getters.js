@@ -12,3 +12,5 @@ export const travelsDateilShow=state=>state.travelsDateilShow;
 export const writeTravels=state=>state.writeTravels;
 //关注详情
 export const attentionData=state=>state.attentionData;
+//景点
+export const viewspotDetail=state=>state.viewspotDetail;

@@ -10,6 +10,7 @@ const state={
   travelsDateil:{},
   travelsDateilShow:false,
   writeTravels:false,
-  attentionData:{}
+  attentionData:{},
+  viewspotDetail:{}
 }
 export default state;

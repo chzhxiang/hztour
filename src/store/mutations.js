@@ -17,6 +17,9 @@ const mutations={
   },
   [types.SET_ATTENTIONDATA](state,attentionData){
     state.attentionData=attentionData;
+  },
+  [types.SET_VIEWSPOTDETAIL](state,viewspotDetail){
+    state.viewspotDetail=viewspotDetail;
   }
 };
 export default mutations;

@@ -24,6 +24,8 @@ import Collection from "@/components/my/collection";
 import Attention from "@/components/my/attention";
 //关注用户列表
 import UserTravelsList from "@/components/travels/user_travels_list"
+//景点
+import ViewspotDetail from "@/components/viewspot/viewspot_detail";
 
 Vue.use(VueRouter);
 export default new VueRouter({
@@ -40,6 +42,9 @@ export default new VueRouter({
     },{
       path:"/viewspot",
       component:Viewspot
+    },{
+      path:"/viewspotDetail",
+      component:ViewspotDetail
     },{
       path:"/season",
       component:Season

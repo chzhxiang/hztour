@@ -1,12 +1,13 @@
 <template>
     <div class="season">
-      <div class="itemBox" v-for="(item,index) in seasonData">
-        <p class="item" :id="itemName+index">{{item.articleName}}</p>
+      <div class="itemBox" >
+        <p class="item" @click="getview(item)" v-for="item in seasonData">{{item.articleName}}</p>
       </div>
     </div>
 </template>
 
 <script>
+  import {mapMutations} from "vuex"
   import axios from "axios";
     export default {
         name: "season",
@@ -83,7 +84,13 @@
         })
       },
       methods:{
-
+        getview(val){
+          this.$router.push("/viewspotDetail");
+          this.setViewSpotDetail(val);
+        },
+        ...mapMutations({
+          setViewSpotDetail:"SET_VIEWSPOTDETAIL"
+        })
       }
     }
 </script>
@@ -100,5 +107,6 @@
     border-radius: 10px;
     border: 1px solid skyblue;
     float: left;
+    margin: 5px;
   }
 </style>
