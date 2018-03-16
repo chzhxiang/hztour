@@ -55,8 +55,8 @@
       },
       _setSliderWidth(isResize){
         this.children = this.$refs.sliderGroup.children;
-        console.log("children");
-        console.log(this.children);
+        //console.log("children");
+        //console.log(this.children);
         let width = 0;
         let sliderWidth = this.$refs.slider.clientWidth;
         for(let i=0;i<this.children.length;i++){
@@ -98,9 +98,9 @@
       },
       _initDots(){
         if(this.loop){
-          console.log(this.children.length);
+          //console.log(this.children.length);
           this.dots = new Array(this.children.length-2);
-          console.log(this.dots);
+          //console.log(this.dots);
         }else{
           this.dots = new Array(this.children.length);
         }

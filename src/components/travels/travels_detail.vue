@@ -6,7 +6,7 @@
           <img src="http://localhost:8080/static/icon/back.png" class="backIcon" @click="backFn"/>
           <p class="myTravelsTitle">游记</p>
         </div>
-        <scroll>
+        <scroll class="scrollDateil" v-bind:style="{height:h+'px'}">
           <div class="listdetail-content">
             <div class="listdetail-content-top">
               <h2 class="title" style="padding:0px;">{{travelsDateil.title}}</h2>
@@ -22,10 +22,12 @@
                 </p>
               </div>
             </div>
-            <div id="travelsImg"
+			<scroll-x :data="travelsDateil.img" style="width: 100%;overflow: hidden;">
+			  <div id="travelsImg"
                  v-html="str"
-                 v-bind:style="{overflow:'hidden',height: travelsDateil.img.length===0?'0px':'200px',background: '#fff',width:(travelsDateil.img.length*210)+'px'}">
-            </div>
+                 v-bind:style="{overflow:'hidden',height: travelsDateil.img.length===0?'0px':'150px',background: '#fff',width:(travelsDateil.img.length*210)<w?'100%':(travelsDateil.img.length*210)+'px'}">
+			  </div>
+			</scroll-x>
             <div class="article">
               <p>{{travelsDateil.content}}</p>
             </div>
@@ -40,19 +42,26 @@
   import axios from "axios";
   import Scroll from "@/base/scroll/scroll";
   import {mapMutations,mapGetters} from "vuex";
+  import ScrollX from "@/base/scroll/scroll_x";
     export default {
         name: "travels_detail",
       data(){
           return{
-            str:''
+            str:'',
+			w:null,
+			h:null
           }
       },
       components:{
-        Scroll
+        Scroll,
+		ScrollX
       },
       created(){
+		this.h=window.screen.height;
+		this.w=window.screen.width;
+		console.log(this.travelsDateilShow);
         if(this.travelsDateilShow){
-          // console.log(this.travelsDateilShow);
+          console.log(this.travelsDateilShow);
           this.str="";
           for(let i=0;i<this.travelsDateil.img.length;i++){
             // console.log(i);
@@ -119,12 +128,14 @@
       },
       watch:{
         travelsDateilShow(val){
-          this.str="";
-          for(let i=0;i<this.travelsDateil.img.length;i++){
-            this.str+="<div style='width: 200px;height: 200px;float: left;overflow: hidden;margin: 5px;line-height: 200px;'><img src='"+this.travelsDateil.img[i].path+"' style='width: 200px;'/></div>";
-          }
-          document.getElementById('travelsImg').innerHTML=this.str;
-        }
+			if(val){
+				this.str="";
+				for(let i=0;i<this.travelsDateil.img.length;i++){
+					this.str+="<div style='width: 200px;height: 200px;float: left;overflow: hidden;margin: 5px;line-height: 200px;'><img src='"+this.travelsDateil.img[i].path+"' style='width: 200px;'/></div>";
+				}
+				document.getElementById('travelsImg').innerHTML=this.str;
+			}
+		}
       }
     }
 </script>
@@ -149,6 +160,11 @@
     text-align: center;
     width: 100%;
     font-size: 1.2em;
+  }
+  .scrollDateil{
+	width:100%;
+	height:100%;
+	overflow:hidden;
   }
   .list-detail-box
     position fixed
