@@ -3,7 +3,7 @@
       <scroll :data="bannerImg" v-bind:style="{height:(h-92)+'px',overflow:'hidden'}">
         <div>
           <slider-home :autoPlay="true" :loop="true" :data="bannerImg">
-			  <div v-for="item in bannerImg" class="sliderBox">
+			  <div v-for="item in bannerImg" class="sliderBox" @click="getList(item)">
 				<a href="#">
 				  <img :src="item.img[0].path" class="needsclick"/>
 				</a>
@@ -55,22 +55,6 @@
         this.w=window.screen.width;
         this.init();
         this.listInit();
-        setTimeout(()=>{
-          // this.imgWidth=window.screen.width;
-          // // console.log("imgWidth="+this.imgWidth);
-          // for(let i=0;i<this.bannerImg.length;i++){
-          //   // console.log("i="+i);
-          //   this.lis.push(document.getElementById(this.itemId+i));
-          //   // console.log(this.lis[i]);
-          //   this.lis[i].style.left=this.imgWidth+'px';
-          // }
-          // this.lis[0].style.left=0+"px";
-          // console.log(this.bannerImg.length);
-          // console.log("lis="+this.lis);
-          // this.timerAll=setInterval(()=>{
-          //   this.autoplay();
-          // },2000);
-        },1000);
       },
       components:{
         Carousel,
@@ -173,49 +157,9 @@
             }
           })
         },
-        aa(){
-          console.log("aa");
-          alert("aa");
-        },
-        touchStart(){
-          console.log("touchStart");
-          clearInterval(this.timerAll);
-        },
-        touchMove(){
-
-        },
-        touchEnd(){
-
-        },
-        //轮播图点击
-        itemFn(){
-          alert("banne");
-          clearInterval(this.timerAll);
-        },
-        //动画初始化
-        animation(obj,target){
-          // console.log(obj);
-          clearInterval(obj.timer);//为避免多个定时器同时运行带来的bug，在用定时器之前先清理定时器
-          obj.timer=setInterval(function(){
-            var speed=(target-obj.offsetLeft)/10;//缓动速度
-            speed=speed>0?Math.ceil(speed):Math.floor(speed);//为确保能搞达到最终目标值，给speed取整
-            obj.style.left=obj.offsetLeft+speed+"px";//赋值给当前元素
-            if(target==obj.offsetLeft){//属性达到目标值时，清理定时器
-              clearInterval(obj.timer);
-            }
-          },20);
-        },
-        autoplay(){
-          this.animation(this.lis[this.num],-this.imgWidth);
-          this.num=++this.num>this.lis.length-1?0:this.num;
-          this.lis[this.num].style.left=this.imgWidth+"px";
-          // console.log("ghsgdh="+this.num);
-          this.animation(this.lis[this.num],0);
-          // light();
-        },
         //游记点击事件
         getList(listItem){
-          // console.log(listItem);
+          //console.log(listItem);
           this.setTravelsDateil(listItem);
           this.setTravelsDateilShow(true);
         },
