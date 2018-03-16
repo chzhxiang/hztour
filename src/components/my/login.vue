@@ -15,7 +15,7 @@
       </div>
       <div>
         <p class="forget" @click="goForget">忘记密码？</p>
-        <p class="register" @click="goRegister">没有账户，去注册</p>
+        <p class="register" @click="goRegister">没有账户?去注册</p>
       </div>
     </div>
 </template>
