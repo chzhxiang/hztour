@@ -14,11 +14,11 @@
                 <p class="userItem">作者 ： {{travelsDateil.author}}</p>
                 <p class="userItem" @click="collectionFn">
                   <img src="http://localhost:8080/static/icon/collection.png" style="transform: translateY(2px);display: inline;"/>
-                  收藏
+                  收藏（{{c}}）
                 </p>
                 <p class="userItem" @click="followFn">
                   <img src="http://localhost:8080/static/icon/follow.png" style="transform: translateY(2px);display: inline;"/>
-                  关注
+                  关注（{{a}}）
                 </p>
               </div>
             </div>
@@ -49,7 +49,9 @@
           return{
             str:'',
 			w:null,
-			h:null
+			h:null,
+			c:0,
+			a:0
           }
       },
       components:{
@@ -59,19 +61,20 @@
       created(){
 		this.h=window.screen.height;
 		this.w=window.screen.width;
-		console.log(this.travelsDateilShow);
+		//console.log(this.travelsDateilShow);
         if(this.travelsDateilShow){
+		  this.init();
           console.log(this.travelsDateilShow);
           this.str="";
           for(let i=0;i<this.travelsDateil.img.length;i++){
-            // console.log(i);
             this.str+="<div style='width: 200px;height: 200px;float: left;overflow: hidden;margin: 5px;line-height: 200px;'><img src='"+this.travelsDateil.img[i].path+"' style='width: 200px;'/></div>";
           }
-          // console.log("str");
-          // console.log(this.str);
           document.getElementById('travelsImg').innerHTML=this.str;
         }
       },
+	  mounted(){
+	  
+	  },
       computed:{
         ...mapGetters(['travelsDateil','travelsDateilShow'])
       },
@@ -79,6 +82,27 @@
         backFn(){
           this.setTravelsDateilShow(false);
         },
+		init(){
+		  axios.post("/collection/selCollectionId",{
+            articleId:this.travelsDateil.id
+          }).then((res)=>{
+            if(res.data.code===0){
+              //console.log(res.data);
+			  this.c=res.data.data.length;
+            }else {
+              
+            }
+          });
+		  axios.post("/attention/selAttentionid",{
+            authorId:this.travelsDateil.authorId
+          }).then((res)=>{
+            if(res.data.code===0){
+			  this.a=res.data.data.length;
+            }else {
+              
+            }
+          })
+		},
         //收藏
         collectionFn(){
           if(!window.localStorage.getItem("userInfo")){
@@ -92,14 +116,14 @@
             articleName:this.travelsDateil.title,
             articleImg:this.travelsDateil.img
           }).then((res)=>{
-            console.log(res.data);
+            //console.log(res.data);
             if(res.data.code===0){
               alert("收藏成功，前往我的收藏即可查看！")
             }else {
               alert(res.data.msg);
             }
           })
-          console.log("collectionFn");
+          //console.log("collectionFn");
         },
         //关注
         followFn(){
@@ -108,13 +132,13 @@
             this.$router.push('/my/login');
             return;
           }
-          console.log("followFn");
-          console.log(this.travelsDateil.author);
+          //console.log("followFn");
+          //console.log(this.travelsDateil.author);
           axios.post("/attention/addAttention",{
             authorId:this.travelsDateil.authorId,
             userId:JSON.parse(window.localStorage.getItem("userInfo"))[0].id
           }).then((res)=>{
-            console.log(res.data);
+            //console.log(res.data);
             if(res.data.code===0){
               alert("关注成功，可前往我的关注查看！");
             }else {
@@ -129,6 +153,7 @@
       watch:{
         travelsDateilShow(val){
 			if(val){
+			    this.init();
 				this.str="";
 				for(let i=0;i<this.travelsDateil.img.length;i++){
 					this.str+="<div style='width: 200px;height: 200px;float: left;overflow: hidden;margin: 5px;line-height: 200px;'><img src='"+this.travelsDateil.img[i].path+"' style='width: 200px;'/></div>";

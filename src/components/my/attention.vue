@@ -2,7 +2,7 @@
     <div class="attentionBox">
       <div class="backBox">
         <img src="http://localhost:8080/static/icon/back.png" class="backIcon" @click="backFn"/>
-        <p class="myTravelsTitle">我的关注</p>
+        <p class="myTravelsTitle">我的关注（{{userArr.length}}）</p>
       </div>
       <scroll>
         <div>

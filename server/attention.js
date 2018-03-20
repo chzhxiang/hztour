@@ -40,6 +40,20 @@ Router.post('/selAttention',(req,res)=>{
   });
 });
 
+//根据文章id查看关注
+Router.post('/selAttentionid',(req,res)=>{
+  console.log('selCollection');
+  console.log(req.body);
+  const {authorId}=req.body;
+  Attention.find({authorId},(err,data)=> {
+    if (err) {
+      return res.json({"code": 1, "msg": err});
+    }
+    console.log(data.length);
+    return res.json({code: 0, 'data': data});
+  });
+});
+
 //删除关注
 Router.post('/delAttention',(req,res)=>{
   console.log('selCollection');

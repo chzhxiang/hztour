@@ -2,7 +2,7 @@
   <div class="userListBox">
     <div class="backBox">
       <img src="http://localhost:8080/static/icon/back.png" class="backIcon" @click="backFn"/>
-      <p class="myTravelsTitle">{{attentionData.userName}}的游记</p>
+      <p class="myTravelsTitle">{{attentionData.userName}}的游记（{{listData.length}}）</p>
     </div>
     <scroll :data="listData" v-bind:style="{height:(h-92)+'px',overflow:'hidden'}">
       <div>

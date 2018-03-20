@@ -2,7 +2,7 @@
     <div class="myTravelsBox">
       <div class="backBox">
         <img src="http://localhost:8080/static/icon/back.png" class="backIcon" @click="backFn"/>
-        <p class="myTravelsTitle">我的游记</p>
+        <p class="myTravelsTitle">我的游记（{{travelsData.length}}）</p>
       </div>
       <scroll class="myTravelsScroll">
         <div class="myTravelsContent">

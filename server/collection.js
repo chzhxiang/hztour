@@ -41,6 +41,20 @@ Router.post('/selCollection',(req,res)=>{
   });
 });
 
+//根据文章id查看收藏
+Router.post('/selCollectionId',(req,res)=>{
+  console.log('selCollection');
+  console.log(req.body);
+  const {articleId}=req.body;
+  Collection.find({articleId},(err,data)=> {
+    if (err) {
+      return res.json({"code": 1, "msg": err});
+    }
+    console.log(data.length);
+    return res.json({code: 0, 'data': data});
+  });
+});
+
 //删除收藏
 Router.post('/delCollection',(req,res)=>{
   console.log('delCollection');

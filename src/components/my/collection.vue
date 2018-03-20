@@ -2,7 +2,7 @@
     <div class="collectionBox">
       <div class="backBox">
         <img src="http://localhost:8080/static/icon/back.png" class="backIcon" @click="backFn"/>
-        <p class="myTravelsTitle">我的收藏</p>
+        <p class="myTravelsTitle">我的收藏（{{collectionData.length}}）</p>
       </div>
       <scroll v-bind:style="{height:(h-32)+'px'}" class="scrollCollenction" :data="collectionData">
         <div class="collectionContenBox">
