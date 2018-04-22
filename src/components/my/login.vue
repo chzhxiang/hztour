@@ -61,14 +61,15 @@
               let id=res.data.data[0]._id;
               let flag=res.data.data[0].avatar;
               if(res.data.data[0].avatar){
-                console.log(67437473);
+                // console.log(67437473);
                 axios.post("/user/reqAvatar",{
                   img:res.data.data[0].avatar
                 }).then((resagain)=>{
+                  // console.log(resagain.data);
                   if(resagain.data.code===0){
                     window.localStorage.setItem("userInfo",JSON.stringify([{
                       userName:this.loginName,
-                      avatar:resagain.data.msg.path,
+                      avatar:resagain.data.data.path,
                       id:id,
                       flag:flag
                     }]));

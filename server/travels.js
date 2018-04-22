@@ -7,12 +7,12 @@ const TravelsImg=require('./model').getModel('travelsImg');
 
 //提交
 Router.post('/register',(req,res)=>{
-  console.log('register');
+  // console.log('register');
   Travels.find({articleName:req.body.articleName},(err,data)=> {
     if (err) {
       return res.json({"code": 1, "msg": err});
     }
-    console.log(data.length);
+    // console.log(data.length);
     if (data.length > 0) {
       return res.json({code: 1, msg: "该文章名已存在！"});
     }else {
@@ -34,11 +34,11 @@ Router.post('/upFile',(req,res)=>{
   form.keepExtensions = true;
   form.parse(req, (err, fields, files)=>{
     if(err){
-      console.log(err);
+      // console.log(err);
       return res.json({'code':1,'msg':"图片上传失败！"});
     }
-    console.log("flag");
-    console.log(fields.flag);
+    // console.log("flag");
+    // console.log(fields.flag);
     TravelsImg.create({"path":files.file.path,"flag":fields.flag},(err,data)=>{
       if(err){
         return res.json({'code':1,'msg':err});
@@ -51,13 +51,13 @@ Router.post('/upFile',(req,res)=>{
 //删除文件
 Router.post('/delFile',(req,res)=>{
   const {flag}=req.body;
-  console.log(flag);
+  // console.log(flag);
   TravelsImg.find({flag},(err,data)=> {
     if (err) {
       return res.json({"code": 1, "msg": err});
     }
-    console.log("data");
-    console.log(data);
+    // console.log("data");
+    // console.log(data);
     if(data.length>0){
       for(let i=0;i<data.length;i++){
         TravelsImg.remove({flag},(err,data)=>{
@@ -125,6 +125,17 @@ Router.post('/delTravels',(req,res)=>{
       return res.json({'code':1,'msg':err});
     }
     res.json({'code':0,"msg":"删除成功！"});
+  });
+});
+
+//删除
+Router.post('/delAllTravels',(req,res)=>{
+  const {authorId}=req.body;
+  Travels.remove({authorId},(err,data)=>{
+    if(err){
+      return res.json({'code':1,'msg':err});
+    }
+    res.json({'code':0,data:data});
   });
 });
 

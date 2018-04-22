@@ -8,6 +8,9 @@ const travelsRouter=require('./travels');
 const collectionRouter=require('./collection');
 const attentionRouter=require('./attention');
 const viewSpotRouter=require('./viewSpot');
+const CommentRouter=require('./comment');
+const Reply=require('./reply');
+const Encourage=require("./encourage");
 
 app.all('*',(req, res, next)=>{
   res.header("Access-Control-Allow-Methods", "POST");
@@ -23,6 +26,9 @@ app.use('/travels',travelsRouter);
 app.use('/collection',collectionRouter);
 app.use('/attention',attentionRouter);
 app.use('/viewSpot',viewSpotRouter);
+app.use('/comment',CommentRouter);
+app.use('/reply',Reply);
+app.use('/encourage',Encourage)
 
 // io.on('connection',(socket)=>{
 //   socket.on('sendmsg',(data)=>{

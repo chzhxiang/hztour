@@ -1,7 +1,7 @@
 <template>
     <div>
       <scroll :data="viewspotData" v-bind:style="{height:(h-92)+'px',overflow:'hidden'}">
-        <div class="viewConten">
+        <div class="viewConten" v-bind:style="{height:404*viewspotData.length+'px'}">
           <div v-for="item in viewspotData" class="viewItem"
                @click="getView(item)"
                v-bind:style="{paddingBottom:5*viewspotData.length+'px'}">

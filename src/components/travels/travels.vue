@@ -3,12 +3,12 @@
       <scroll :data="bannerImg" v-bind:style="{height:(h-92)+'px',overflow:'hidden'}">
         <div>
           <slider-home :autoPlay="true" :loop="true" :data="bannerImg">
-			  <div v-for="item in bannerImg" class="sliderBox" @click="getList(item)">
-				<a href="#">
-				  <img :src="item.img[0].path" class="needsclick"/>
-				</a>
-			  </div>
-		  </slider-home>
+            <div v-for="item in bannerImg" class="sliderBox">
+              <a href="#" @click="getList(item)">
+                <img :src="item.img[0].path" class="needsclick"/>
+              </a>
+            </div>
+          </slider-home>
           <div class="content">
             <div class="listItem" v-for="listItem in listData" @click="getList(listItem)">
               <div class="itemImg">
@@ -60,19 +60,22 @@
         Carousel,
         Scroll,
         Slider,
-		SliderHome
+		    SliderHome
+      },
+      computed:{
+        ...mapGetters(['writeTravels','upDataTravels'])
       },
       methods:{
           //轮播图数据初始化
         init(){
-		  axios.post("/travels/selAllTravels").then((res)=>{
+		      axios.post("/travels/selAllTravels").then((res)=>{
             //console.log("游记list");
             //console.log(res.data);
             if(res.data.code===0){
               for(let i=res.data.data.length-1;i>=0;i--){
-				if(this.bannerImg.length>5){
-					return ;
-				}
+				        if(this.bannerImg.length>5){
+					      return ;
+				      }
                 let flag=res.data.data[i].flag;
                 let id=res.data.data[i]._id;
                 let title=res.data.data[i].articleName;
@@ -99,7 +102,7 @@
                         img:resImg.data.data
                       })
                     }else {
-                      
+
                     }
                   }
                 })
@@ -159,7 +162,7 @@
         },
         //游记点击事件
         getList(listItem){
-          //console.log(listItem);
+          // console.log('000');
           this.setTravelsDateil(listItem);
           this.setTravelsDateilShow(true);
         },
@@ -170,6 +173,20 @@
           setTravelsDateil:"SET_TRAVELSDATEIL",
           setTravelsDateilShow:"SET_TRAVELSDATEILSHOW"
         })
+      },
+      watch:{
+        writeTravels(){
+          this.bannerImg=[];
+          this.listData=[];
+          this.init();
+          this.listInit();
+        },
+		upDataTravels(){
+		  this.bannerImg=[];
+          this.listData=[];
+          this.init();
+          this.listInit();
+		}
       }
     }
 </script>

@@ -92,17 +92,17 @@
           if(this.autoPlay){
             clearTimeout(this.timer);
             this._play();
-            console.log(this.currentPageIndex);
+            // console.log(this.currentPageIndex);
           }
         })
       },
       _initDots(){
         if(this.loop){
           //console.log(this.children.length);
-          this.dots = new Array(this.children.length-2);
+          this.dots = new Array(this.children?this.children.length-2:0);
           //console.log(this.dots);
         }else{
-          this.dots = new Array(this.children.length);
+          this.dots = new Array(this.children?this.children.length:0);
         }
       },
       _play(){

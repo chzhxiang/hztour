@@ -42,6 +42,9 @@
         this.getList();
         this.h=window.screen.height;
         this.w=window.screen.width;
+        if(!this.attentionData.id){
+          window.history.back();
+        }
       },
       components:{
         Scroll
@@ -55,11 +58,11 @@
         },
         getList(){
           if(this.attentionData){
-            console.log(this.attentionData);
+            // console.log(this.attentionData);
             axios.post("/travels/selTravels",{
               authorId:this.attentionData.id
             }).then((res)=>{
-              console.log(res.data);
+              // console.log(res.data);
               if(res.data.code===0){
                 for(let i=res.data.data.length-1;i>=0;i--){
                   let flag=res.data.data[i].flag;
@@ -69,12 +72,12 @@
                   let user=res.data.data[i].author;
                   let userId=res.data.data[i].authorId;
                   let content=res.data.data[i].articleContent;
-                  console.log(i);
+                  // console.log(i);
                   axios.post("/travels/selTravelsimg",{
                     flag:res.data.data[i].flag
                   }).then((resImg)=>{
-                    console.log("listData");
-                    console.log(resImg.data.data[0].path);
+                    // console.log("listData");
+                    // console.log(resImg.data.data);
                     if(resImg.data.code===0){
                       if(resImg.data.data.length>0){
                         this.listData.push({

@@ -3,9 +3,6 @@
     <travels-detail></travels-detail>
     <hz-header/>
     <tab/>
-    <!--<rigster v-if="isRegister"/>-->
-    <!--<Login v-show="isLogin"/>-->
-    <!--<ForgetPwd v-if="isForgetPwd"/>-->
     <keep-alive>
       <router-view/>
     </keep-alive>
@@ -83,7 +80,6 @@ export default {
     outline-style: none;
     outline:none;
     resize:none;
-    -webkit-appearance: none;
   }
   ul,li{
     list-style: none;

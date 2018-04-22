@@ -35,7 +35,7 @@
   import axios from "axios";
   //scroll
   import Scroll from "@/base/scroll/scroll";
-  import {mapGetters} from "vuex";
+  import {mapGetters,mapMutations} from "vuex";
     export default {
         name: "updata_travels",
       data(){
@@ -52,10 +52,10 @@
       },
       created(){
         this.h=window.screen.height;
-        console.log(this.h);
-        console.log('name');
-        console.log(JSON.parse(window.localStorage.getItem("userInfo")).length>0);
-        console.log(JSON.parse(window.localStorage.getItem("userInfo"))[0].userName);
+        //console.log(this.h);
+        //console.log('name');
+        //console.log(JSON.parse(window.localStorage.getItem("userInfo")).length>0);
+        //console.log(JSON.parse(window.localStorage.getItem("userInfo"))[0].userName);
         if(window.localStorage.getItem("userInfo")){
           this.userName=JSON.parse(window.localStorage.getItem("userInfo"))[0].userName;
           this.init();
@@ -73,6 +73,10 @@
       methods:{
         //初始化
         init(){
+		  if(!this.upDataTravels._id){
+		    this.$router.push("/my");
+			return;
+		  }
           this.editTitle=this.upDataTravels.articleName;
           this.editContent=this.upDataTravels.articleContent;
           this.imgFlag=this.upDataTravels.flag;
@@ -80,8 +84,8 @@
           axios.post("/travels/selTravelsimg",{
             flag:this.upDataTravels.flag
           }).then((res)=>{
-            console.log(res.data);
             if(res.data.code===0){
+			  document.getElementById('imgBox').innerHTML='';
               for(let i=0;i<res.data.data.length;i++){
                 console.log(i);
                 document.getElementById('imgBox').innerHTML=document.getElementById('imgBox').innerHTML+"<div style='width: 100px;height: 100px;float: left;overflow: hidden;margin: 10px;line-height: 100px;'><img src='"+res.data.data[i].path+"' style='height: 100px;'/></div>";
@@ -162,8 +166,9 @@
               alert(res.data.msg);
               return;
             }else {
-              alert('上传成功！');
+              alert('修改成功！');
               this.$router.push("/my");
+			  this.setUpDataTravels('');
               this.editTitle='';
               this.editContent='';
               document.getElementById('imgBox').innerHTML='';
@@ -174,25 +179,15 @@
         //返回
         backFn(){
           window.history.back();
-        }
+		  this.setUpDataTravels('');
+        },
+		...mapMutations({
+          setUpDataTravels:"SET_UPDATATRAVELS"
+        })
       },
       watch:{
         upDataTravels(val){
-          this.editTitle=val.articleName;
-          this.editContent=val.articleContent;
-          this.imgFlag=val.flag;
-          this.id=val._id;
-          axios.post("/travels/selTravelsimg",{
-            flag:val.flag
-          }).then((res)=>{
-            console.log(res.data);
-            if(res.data.code===0){
-              for(let i=0;i<res.data.data.length;i++){
-                console.log(i);
-                document.getElementById('imgBox').innerHTML=document.getElementById('imgBox').innerHTML+"<div style='width: 100px;height: 100px;float: left;overflow: hidden;margin: 10px;line-height: 100px;'><img src='"+res.data.data[i].path+"' style='height: 100px;'/></div>";
-              }
-            }
-          })
+          this.init();
         }
       }
     }

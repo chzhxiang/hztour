@@ -36,10 +36,9 @@
   import 'quill/dist/quill.snow.css'
   import 'quill/dist/quill.bubble.css'
   import {quillEditor} from 'vue-quill-editor'
-  //axios
   import axios from "axios";
-  //scroll
   import Scroll from "@/base/scroll/scroll";
+  import {data} from "@/common/js/data.js";
   import {mapMutations,mapGetters} from "vuex";
     export default {
         name: "write_travels",
@@ -55,14 +54,14 @@
       },
       created(){
           this.h=window.screen.height;
-          console.log(this.h);
-          console.log('writecreated');
-          console.log(JSON.parse(window.localStorage.getItem("userInfo")).length>0);
-          console.log(JSON.parse(window.localStorage.getItem("userInfo"))[0].userName);
-        if(JSON.parse(window.localStorage.getItem("userInfo"))[0].userName){
+          // console.log(this.h);
+          // console.log('writecreated');
+          // console.log(JSON.parse(window.localStorage.getItem("userInfo")).length>0);
+          // console.log(JSON.parse(window.localStorage.getItem("userInfo"))[0].userName);
+        if(!this.userName&&!this.imgFlag){
           this.userName=JSON.parse(window.localStorage.getItem("userInfo"))[0].userName;
           this.imgFlag=this.userName+''+new Date().getFullYear()+'-'+new Date().getMonth()+'-'+new Date().getDate()+' '+new Date().getHours()+':'+new Date().getMinutes()+':'+new Date().getSeconds()+' '+Math.random()+' '+Math.random();
-          console.log(this.imgFlag);
+          // console.log(this.imgFlag);
         }else {
           alert('您的状态未登录状态，请前往登录！');
           return;
@@ -87,6 +86,9 @@
             alert("图片格式错误！");
             return;
           };
+          if(this.imgFlag){
+            this.imgFlag=this.userName+''+new Date().getFullYear()+'-'+new Date().getMonth()+'-'+new Date().getDate()+' '+new Date().getHours()+':'+new Date().getMinutes()+':'+new Date().getSeconds()+' '+Math.random()+' '+Math.random();
+          }
           let imgff=this.imgFlag;
           var fileR = new FileReader();
           var filName = e.target.files[0];
@@ -106,12 +108,12 @@
             //   console.log(8347837483);
             //   this.imgFlag=this.userName+''+new Date().getFullYear()+'-'+new Date().getMonth()+'-'+new Date().getDate()+' '+new Date().getHours()+':'+new Date().getMinutes()+':'+new Date().getSeconds()+' '+Math.random()+' '+Math.random();
             // }
-            console.log(imgff);
+            // console.log(imgff);
             form.append('flag', imgff);
             form.append("file", filName);
             axios.post('/travels/upFile',form,config).then((res)=>{
-              console.log('/travels/upFile');
-              console.log(res.data);
+              // console.log('/travels/upFile');
+              // console.log(res.data);
               if(res.data.code===1){
                 alert(res.data.msg);
                 return;
@@ -121,7 +123,7 @@
         },
         //上传
         travelsSubmit(){
-		      console.log(this.imgFlag);
+		      // console.log(this.imgFlag);
           if(this.editTitle.trim()===''){
             alert('游记标题不能为空！');
             return;
@@ -130,8 +132,19 @@
             alert('游记内容不能为空！');
             return;
           }
+          for(let i=0;i<data.length;i++){
+			let str=data[i].replace(/\//g,"");
+            if(this.editTitle.indexOf(str)!==-1){
+              alert('游记标题内容涉及敏感词汇，请修改！');
+              return;
+            }
+            if(this.editContent.indexOf(str)!==-1){
+              alert('游记内容涉及敏感词汇，请修改！');
+			  // console.log(data[i]);
+              return;
+            }
+          }
           if(JSON.parse(window.localStorage.getItem("userInfo"))[0].userName){
-
           }else {
             alert('您还未登录，请前往登录！');
             this.$router.push("/my/login");
@@ -156,6 +169,7 @@
               return;
             }else {
               alert('上传成功！');
+              this.imgFlag='';
               this.$router.push("/my");
               this.editTitle='';
               this.editContent='';
@@ -169,7 +183,7 @@
           this.editTitle='';
           this.editContent='';
           if(document.getElementById('imgBox').innerHTML){
-            console.log(this.imgFlag)
+            // console.log(this.imgFlag)
             axios.post("/travels/delFile",{
               flag:this.imgFlag
             }).then((res)=>{
@@ -182,6 +196,7 @@
         backFn(){
           window.history.back();
           this.setWriteTravels(false);
+          this.imgFlag='';
           // this.$router.push("/my");
         },
         ...mapMutations({
@@ -191,14 +206,11 @@
       watch:{
         writeTravels(val){
           if(val){
-            console.log('writewatch');
-            if(JSON.parse(window.localStorage.getItem("userInfo"))[0].userName){
+            // console.log('writewatch');
+            if(!this.userName&&!this.imgFlag){
               this.userName=JSON.parse(window.localStorage.getItem("userInfo"))[0].userName;
               this.imgFlag=this.userName+''+new Date().getFullYear()+'-'+new Date().getMonth()+'-'+new Date().getDate()+' '+new Date().getHours()+':'+new Date().getMinutes()+':'+new Date().getSeconds()+' '+Math.random()+' '+Math.random();
-              console.log(this.imgFlag);
-            }else {
-              alert('您的状态未登录状态，请前往登录！');
-              return;
+              // console.log(this.imgFlag);
             }
           }
         }
@@ -245,6 +257,7 @@
       resize none
       margin 9px 0px
       border 1px solid #ccc
+      padding 5px
     .essayPictureFile
         display none
     .essayPicture

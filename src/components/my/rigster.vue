@@ -74,7 +74,7 @@
             return;
           }
           console.log(document.getElementById('fileUp').files[0]);
-          let imgFlag=document.getElementById('fileUp').files[0].name+new Date().getFullYear()+'-'+new Date().getMonth()+'-'+new Date().getDay()+'-'+new Date().getHours()+'-'+new Date().getMinutes()+'-'+new Date().getSeconds()+'-'+Math.random();
+          let imgFlag=document.getElementById('fileUp').files[0]?document.getElementById('fileUp').files[0].name+new Date().getFullYear()+'-'+new Date().getMonth()+'-'+new Date().getDay()+'-'+new Date().getHours()+'-'+new Date().getMinutes()+'-'+new Date().getSeconds()+'-'+Math.random():'';
           // if(!document.getElementById('fileUp').files[0]) {
           //   alert('头像信息未更改，若不需更改则直接注册；若需更改需点击头像显示框更换头像信息，再注册！');
           // }
@@ -90,7 +90,6 @@
               alert(res.data.msg);
               return;
             } else {
-
               if (document.getElementById('fileUp').files[0]) {
                 let form = new FormData();
                 console.log(imgFlag);
@@ -119,6 +118,9 @@
                     return;
                   }
                 })
+              }else {
+                alert("注册成功");
+                return;
               }
             }
           });

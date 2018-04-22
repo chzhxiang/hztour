@@ -51,6 +51,25 @@ const models={
   viewSpotImg:{
     'path':{'type':String,'require':true},
     'flag':{'type':String,'require':true}
+  },
+  comment:{
+    'userId':{'type':String,'require':true},
+    'articleId':{'type':String,'require':true},
+    'commentTxt':{'type':String,'require':true},
+    'timer':{'type':String,'require':true}
+  },
+  reply:{
+    'commentId':{'type':String,'require':true},
+    'userId':{'type':String,'require':true},
+    'replyTxt':{'type':String,'require':true}
+  },
+  customerService:{
+    'userId':{'type':String,'require':true},
+    'txt':{'type':String,'require':true}
+  },
+  encourage:{
+    'articleId':{'type':String,'require':true},
+    'userId':{'type':String}
   }
 }
 

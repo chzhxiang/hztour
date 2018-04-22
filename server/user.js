@@ -8,12 +8,12 @@ const Admin=require('./model').getModel('admin');
 
 //注册
 Router.post('/register',(req,res)=>{
-  console.log('register');
+  // console.log('register');
   User.find({userName:req.body.userName},(err,data)=> {
     if (err) {
       return res.json({"code": 1, "msg": err});
     }
-    console.log(data.length);
+    // console.log(data.length);
     if (data.length > 0) {
       return res.json({code: 1, msg: "该昵称已存在！"});
     }else {
@@ -32,12 +32,12 @@ Router.post('/register',(req,res)=>{
 
 //管理员注册
 Router.post('/adminRegister',(req,res)=>{
-  console.log('adminRegister');
+  // console.log('adminRegister');
   Admin.find({userName:req.body.userName},(err,data)=> {
     if (err) {
       return res.json({"code": 1, "msg": err});
     }
-    console.log(data.length);
+    // console.log(data.length);
     if (data.length > 0) {
       return res.json({code: 1, msg: "该昵称已存在！"});
     }else {
@@ -57,14 +57,14 @@ Router.post('/adminRegister',(req,res)=>{
 //管理员登录
 Router.post('/adminLogin',(req,res)=>{
   const {userName,pwd}=req.body;
-  console.log(req.body);
+  // console.log(req.body);
   Admin.find({userName,"pwd":pwd},{pwd:0,__v:0,answer:0,problem:0},(err,data)=>{
     if(err){
       res.json({code:1,msg:err});
       return ;
     }
-    console.log("login");
-    console.log(data);
+    // console.log("login");
+    // console.log(data);
     if(data.length===0){
       res.json({code:1,msg:"用户名和密码不匹配！"});
       return ;
@@ -75,29 +75,29 @@ Router.post('/adminLogin',(req,res)=>{
 
 //上传文件
 Router.post('/upload',(req,res)=>{
-  console.log("UserImg");
+  // console.log("UserImg");
   let form = new formidable.IncomingForm();
   form.uploadDir = "./static/upload";
   form.keepExtensions = true;
   form.parse(req, (err, fields, files)=>{
     if(err){
-      console.log(err);
+      // console.log(err);
       return res.json({'code':1,'msg':"图片上传失败！"});
     }
     // console.log(90909090);
-    console.log(fields.imgName);
+    // console.log(fields.imgName);
     UserImg.remove({"img":fields.imgName},(err,data)=>{
       if(err){
         return res.json({'code':1,'msg':err});
       }
-      console.log("remove");
-      console.log(data);
+      // console.log("remove");
+      // console.log(data);
       UserImg.create({'userName':fields.name,"path":files.file.path,"img":fields.imgName},(err,creadData)=>{
         if(err){
           return res.json({'code':1,'msg':err});
         }
-        console.log("creadData");
-        console.log(creadData);
+        // console.log("creadData");
+        // console.log(creadData);
         return res.json({'code':0,'msg':'成功'});
       });
     });
@@ -108,14 +108,14 @@ Router.post('/upload',(req,res)=>{
 //登录
 Router.post('/login',(req,res)=>{
   const {userName,pwd}=req.body;
-  console.log(req.body);
+  // console.log(req.body);
   User.find({userName,"pwd":pwd},{pwd:0,__v:0,answer:0,problem:0},(err,data)=>{
     if(err){
       res.json({code:1,msg:err});
       return ;
     }
-    console.log("login");
-    console.log(data);
+    // console.log("login");
+    // console.log(data);
     if(data.length===0){
       res.json({code:1,msg:"用户名和密码不匹配！"});
       return ;
@@ -127,7 +127,7 @@ Router.post('/login',(req,res)=>{
 //根据_id查用户信息
 Router.post('/selUser',(req,res)=>{
   const {_id}=req.body;
-  console.log(req.body);
+  // console.log(req.body);
   User.find({_id},{pwd:0,__v:0,answer:0,problem:0},(err,data)=>{
     if(err){
       res.json({code:1,msg:err});
@@ -140,7 +140,7 @@ Router.post('/selUser',(req,res)=>{
 //根据用户名查用户
 Router.post('/selUsername',(req,res)=>{
   const {userName}=req.body;
-  console.log(req.body);
+  // console.log(req.body);
   User.find({userName},{pwd:0,__v:0,answer:0,problem:0},(err,data)=>{
     if(err){
       res.json({code:1,msg:err});
@@ -153,7 +153,7 @@ Router.post('/selUsername',(req,res)=>{
 //忘记密码
 Router.post('/forget',(req,res)=>{
   const {userName,problem,answer}=req.body;
-  console.log(req.body);
+  // console.log(req.body);
   User.find({userName,problem,answer},(err,data)=>{
     if(err){
       return res.json({code:1,msg:err});
@@ -168,7 +168,7 @@ Router.post('/forget',(req,res)=>{
 //忘记密码->修改密码
 Router.post('/forgetup',(req,res)=>{
   const {userName,pwd}=req.body;
-  console.log(req.body);
+  // console.log(req.body);
   User.update({userName},{$set:{pwd}},(err,data)=>{
     if(err){
       return res.json({code:1,msg:err});
@@ -180,7 +180,7 @@ Router.post('/forgetup',(req,res)=>{
 //修改密码
 Router.post('/upPwd',(req,res)=>{
   const {_id,pwd,npwd}=req.body;
-  console.log(req.body);
+  // console.log(req.body);
   User.update({_id,pwd},{$set:{'pwd':npwd}},(err,data)=>{
     if(err){
       return res.json({code:1,msg:err});
@@ -195,7 +195,7 @@ Router.post('/upPwd',(req,res)=>{
 //修改基本信息
 Router.post('/upBaseInfo',(req,res)=>{
   const {_id,userName,nUserName}=req.body;
-  console.log(req.body);
+  // console.log(req.body);
   User.update({_id,userName},{$set:{'userName':nUserName}},(err,data)=>{
     if(err){
       return res.json({code:1,msg:err});
@@ -206,32 +206,32 @@ Router.post('/upBaseInfo',(req,res)=>{
 
 //获取图片文件信息
 Router.post('/reqAvatar',(req,res)=>{
-  console.log(req.query);
+  // console.log(req.query);
   const {img}=req.body;
   UserImg.findOne({img}, (err, dataUserImg) => {
     if (err) {
       return res.json({"code": 1, msg: err});
     }
-    return res.json({code:0,msg:dataUserImg});
-      console.log(dataUserImg);
+    return res.json({code:0,data:dataUserImg});
+      // console.log(dataUserImg);
     })
 });
 
 //删除头像
 Router.post('/delAvatar',(req,res)=>{
-  console.log("delAvatar");
+  // console.log("delAvatar");
   const {flag}=req.body;
   UserImg.find({'img':flag},(err,data)=> {
     if (err) {
       return res.json({"code": 1, "msg": err});
     }
-    console.log("data");
-    console.log(data);
+    // console.log("data");
+    // console.log(data);
     if(data.length>0){
       for(let i=0;i<data.length;i++){
         fs.unlinkSync(data[i].path,(err)=>{
           if(err){
-            console.log(err);
+            // console.log(err);
             return ;
           }
         });
@@ -242,16 +242,16 @@ Router.post('/delAvatar',(req,res)=>{
 
 //修改头像
 Router.post('/reUpload',(req,res)=>{
-  console.log("reUpload");
+  // console.log("reUpload");
   let form = new formidable.IncomingForm();
   form.uploadDir = "./static/upload";
   form.keepExtensions = true;
   form.parse(req, (err, fields, files)=>{
     if(err){
-      console.log(err);
+      // console.log(err);
       return res.json({'code':1,'msg':"图片上传失败！"});
     }
-    console.log(90909090);
+    // console.log(90909090);
     // console.log(fields.imgName);
     UserImg.update({'img':fields.flag},{$set:{'path':files.file.path}},(err,data)=>{
       if(err){

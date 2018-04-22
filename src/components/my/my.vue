@@ -23,7 +23,6 @@
 </template>
 
 <script>
-  //vuex
   import {mapGetters,mapMutations} from "vuex";
     export default {
         name: "my",
@@ -89,7 +88,7 @@
       watch:{
         loginSuccess(){
           // console.log('loginsuccess');
-          if(JSON.parse(window.localStorage.getItem("userInfo")).length>0){
+          if(window.localStorage.getItem("userInfo")){
             this.userName=JSON.parse(window.localStorage.getItem("userInfo"))[0].userName;
             this.userImg=JSON.parse(window.localStorage.getItem("userInfo"))[0].avatar;
           }
