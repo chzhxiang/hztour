@@ -17,6 +17,7 @@
       <p @click="myTravels"><img src="http://localhost:8080/static/icon/myEdit.png"/>我的游记</p>
       <p @click="collectionFn"><img src="http://localhost:8080/static/icon/collection.png"/>我的收藏</p>
       <p @click="followFn"><img src="http://localhost:8080/static/icon/follow.png"/>我的关注</p>
+	  <p @click="serverFn"><img src="http://localhost:8080/static/icon/server.png"/>联系客服</p>
       <p class="out" @click="outLoginFn">退出登录</p>
     </div>
   </div>
@@ -63,6 +64,8 @@
         followFn(){
           this.$router.push("/my/attention");
         },
+		serverFn(){
+		},
         //写游记
         goWriteTravels(){
           if(this.userName) {

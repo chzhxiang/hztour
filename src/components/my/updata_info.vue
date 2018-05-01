@@ -98,21 +98,55 @@
                 "Content-Type": "multipart/form-data"
               }
             };
-            // console.log(this.userName);
-            form.append('imgName',JSON.parse(window.localStorage.getItem("userInfo"))[0].flag);
-            form.append('name', this.userName);
-            form.append("file", document.getElementById('fileUp').files[0]);
-            axios.post("/user/upload", form, config).then((res) => {
-              console.log("修改图片");
-              console.log(res.data);
-              if (res.data.code === 1){
-                alert('图片修改失败,请重试！');
-                return;
-              } else {
-                alert('图片修改成功！');
-                return;
-              }
-            })
+            console.log(JSON.parse(window.localStorage.getItem("userInfo"))[0].flag);
+            if(!JSON.parse(window.localStorage.getItem("userInfo"))[0].flag){
+              let imgFlag1=document.getElementById('fileUp').files[0].name+new Date().getFullYear()+'-'+new Date().getMonth()+'-'+new Date().getDay()+'-'+new Date().getHours()+'-'+new Date().getMinutes()+'-'+new Date().getSeconds()+'-'+Math.random();
+              form.append('imgName',imgFlag1);
+              form.append('name',JSON.parse(window.localStorage.getItem("userInfo"))[0].userName);
+              form.append("file", document.getElementById('fileUp').files[0]);
+              axios.post("/user/register1",{
+                _id:JSON.parse(window.localStorage.getItem("userInfo"))[0].id,
+                avatar:imgFlag1
+              }).then((res)=>{
+                console.log(res.data);
+                if(res.data.code===0){
+                  axios.post("/user/upload", form, config).then((res) => {
+                    // console.log("修改图片");
+                    // console.log(res.data);
+                    if (res.data.code === 1){
+                      alert('图片修改失败,请重试！');
+                      return;
+                    } else {
+                      alert('图片修改成功！');
+                      // window.localStorage.setItem("userInfo",JSON.stringify([{
+                      //   userName:this.loginName,
+                      //   avatar:fileR.result,
+                      //   id:id,
+                      //   flag:imgFlag1
+                      // }]));
+                      return;
+                    }
+                  })
+                }else{
+                  alert("操作失败！");
+                }
+              })
+            }else{
+              form.append('imgName',JSON.parse(window.localStorage.getItem("userInfo"))[0].flag);
+              form.append('name',JSON.parse(window.localStorage.getItem("userInfo"))[0].userName);
+              form.append("file", document.getElementById('fileUp').files[0]);
+              axios.post("/user/upload", form, config).then((res) => {
+                console.log("修改图片");
+                console.log(res.data);
+                if (res.data.code === 1){
+                  alert('图片修改失败,请重试！');
+                  return;
+                } else {
+                  alert('图片修改成功！');
+                  return;
+                }
+              })
+            }
           }
         },
         backFn(){

@@ -26,6 +26,8 @@ import Attention from "@/components/my/attention";
 import UserTravelsList from "@/components/travels/user_travels_list"
 //景点
 import ViewspotDetail from "@/components/viewspot/viewspot_detail";
+//客服
+import ServerChat from "@/components/my/server_chat"
 
 Vue.use(VueRouter);
 export default new VueRouter({
@@ -78,6 +80,9 @@ export default new VueRouter({
     },{
       path:"/my/updataTravels",
       component:UpdataTravels
+    },{
+      path:"/my/server_chat",
+      component:ServerChat
     }
   ]
 })

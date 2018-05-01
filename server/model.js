@@ -70,6 +70,11 @@ const models={
   encourage:{
     'articleId':{'type':String,'require':true},
     'userId':{'type':String}
+  },
+  chat:{
+  	't':{'type':String,'require':true},
+  	'chatId':{'type':String,'require':true},
+  	'txt':{'type':String,'require':true}
   }
 }
 

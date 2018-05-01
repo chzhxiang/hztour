@@ -11,6 +11,8 @@ const viewSpotRouter=require('./viewSpot');
 const CommentRouter=require('./comment');
 const Reply=require('./reply');
 const Encourage=require("./encourage");
+const io=require('socket.io')(server);
+const Chat=require('./model').getModel('chat');
 
 app.all('*',(req, res, next)=>{
   res.header("Access-Control-Allow-Methods", "POST");
@@ -30,21 +32,20 @@ app.use('/comment',CommentRouter);
 app.use('/reply',Reply);
 app.use('/encourage',Encourage)
 
-// io.on('connection',(socket)=>{
-//   socket.on('sendmsg',(data)=>{
-//     const {from,to,msg}=data;
-//     const chatid=[from,to].sort().join('_');
-//     Chat.create({chatid,from,to,content:msg,'create_time':new Date().getTime()},(err,doc)=>{
-//       if(err){
-//         console.log(err);
-//         return ;
-//       }
-//       if(!err){
-//         return io.emit("recvmsg",doc);
-//       }
-//     })
-//   })
-// })
+   io.on('connection',(socket)=>{
+     socket.on('sendmsg',(data)=>{
+       const {chatId,txt}=data;
+       Chat.create({'t':new Date().getTime(),chatId,txt},(err,doc)=>{
+         if(err){
+           console.log(err);
+           return ;
+         }
+         if(!err){
+           return io.emit("recvmsg",doc);
+         }
+       })
+     })
+   })
 
 server.listen(9090,"localhost",()=>{
   console.log('node app start at port 9090');

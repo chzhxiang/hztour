@@ -30,6 +30,25 @@ Router.post('/register',(req,res)=>{
   });
 });
 
+//修改图片（注册时未添加头像信息）
+Router.post('/register1',(req,res)=>{
+  // console.log('register');
+  User.findOne({_id:req.body._id},(err,data)=> {
+    if (err) {
+      return res.json({"code": 1, "msg": err});
+    }
+    // console.log(data.length);
+      let {_id,avatar}=req.body;
+      User.update({_id},{$set:{"avatar":avatar}},(err,registerInfo)=> {
+        if (err) {
+          return res.json({code: 1, msg: "修改失败！"});
+        }
+        const _id = registerInfo._id;
+        return res.json({code: 0, data: { _id, avatar}});
+      });
+    });
+});
+
 //管理员注册
 Router.post('/adminRegister',(req,res)=>{
   // console.log('adminRegister');
@@ -98,7 +117,7 @@ Router.post('/upload',(req,res)=>{
         }
         // console.log("creadData");
         // console.log(creadData);
-        return res.json({'code':0,'msg':'成功'});
+        return res.json({'code':0,'msg':creadData});
       });
     });
     // res.json({'code':0,"avatar":files.file.path});
@@ -260,6 +279,7 @@ Router.post('/reUpload',(req,res)=>{
       return res.json({code:0,msg:"成功！"});
     });
     res.json({'code':0,"avatar":files.file.path});
+    console.log(files.file.path);
   });
 });
 
