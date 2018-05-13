@@ -74,7 +74,8 @@ const models={
   chat:{
   	't':{'type':String,'require':true},
   	'chatId':{'type':String,'require':true},
-  	'txt':{'type':String,'require':true}
+  	'txt':{'type':String,'require':true},
+	'readFlag':{'type':Boolean,'require':true}
   }
 }
 
