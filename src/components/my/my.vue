@@ -25,6 +25,11 @@
 
 <script>
   import {mapGetters,mapMutations} from "vuex";
+  import Io from "socket.io-client";
+  const socket=Io('ws://localhost:9090');
+  socket.on("recvmsg",(data)=>{
+    console.log(data);
+  });
     export default {
         name: "my",
       data(){
@@ -58,14 +63,23 @@
         },
         //收藏
         collectionFn(){
+          if(!this.userName){
+            return;
+          }
           this.$router.push("/my/collection");
         },
         //关注
         followFn(){
+          if(!this.userName){
+            return;
+          }
           this.$router.push("/my/attention");
         },
-		serverFn(){
-		},
+		    serverFn(){
+          if(this.userName){
+            this.$router.push("/my/server_chat");
+          }
+		    },
         //写游记
         goWriteTravels(){
           if(this.userName) {
@@ -75,6 +89,9 @@
         },
         //我的游记
         myTravels(){
+          if(!this.userName){
+            return;
+          }
           this.$router.push("/my/myTravels");
         },
         outLoginFn(){

@@ -11,6 +11,7 @@ const state={
   travelsDateilShow:false,
   writeTravels:false,
   attentionData:{},
-  viewspotDetail:{}
+  viewspotDetail:{},
+  chat:[]
 }
 export default state;

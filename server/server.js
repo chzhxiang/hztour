@@ -11,7 +11,6 @@ const viewSpotRouter=require('./viewSpot');
 const CommentRouter=require('./comment');
 const Reply=require('./reply');
 const Encourage=require("./encourage");
-const io=require('socket.io')(server);
 const Chat=require('./model').getModel('chat');
 
 app.all('*',(req, res, next)=>{
@@ -41,7 +40,9 @@ app.use('/encourage',Encourage)
            return ;
          }
          if(!err){
-           return io.emit("recvmsg",doc);
+			 console.log("123");
+           io.emit("recvmsg",doc);
+		   return;
          }
        })
      })

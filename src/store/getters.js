@@ -14,3 +14,5 @@ export const writeTravels=state=>state.writeTravels;
 export const attentionData=state=>state.attentionData;
 //景点
 export const viewspotDetail=state=>state.viewspotDetail;
+//客服
+export const chat=state=>state.chat;

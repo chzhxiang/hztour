@@ -1,4 +1,5 @@
-import * as types from "./mutation-type"
+import * as types from "./mutation-type";
+
 const mutations={
   [types.SET_UPDATATRAVELS](state,upDataTravels){
     state.upDataTravels=upDataTravels;
@@ -20,6 +21,10 @@ const mutations={
   },
   [types.SET_VIEWSPOTDETAIL](state,viewspotDetail){
     state.viewspotDetail=viewspotDetail;
+  },
+  [types.SET_CHAT](state,data){
+    state.chat=data;
   }
 };
+
 export default mutations;
