@@ -22,7 +22,7 @@
   import Io from "socket.io-client";
   const socket=Io('ws://localhost:9090');
     export default {
-        name: "server_chat",
+      name: "server_chat",
       data(){
         return{
           w:0,
@@ -42,7 +42,7 @@
         this.w=window.screen.width;
         socket.on("recvmsg",(data)=>{
           console.log(data);
-        });
+        })
       },
       computed:{
         ...mapGetters(["chat"])
@@ -52,18 +52,16 @@
           window.history.back();
         },
         sendMsg(){
-          console.log(909090);
           socket.emit('sendmsg',{
-            chatId:this.chatId,
+            from:this.chatId,
+            to:"admins",
             txt:this.txt
           });
           this.txt='';
         },
-		delInfo(){
-		}
-      },
-      watch:{
-
+        delInfo(){
+          console.log("dsds");
+        }
       }
     }
 </script>

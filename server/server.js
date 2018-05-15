@@ -12,6 +12,7 @@ const CommentRouter=require('./comment');
 const Reply=require('./reply');
 const Encourage=require("./encourage");
 const Chat=require('./model').getModel('chat');
+const Chats=require('./chats');
 
 app.all('*',(req, res, next)=>{
   res.header("Access-Control-Allow-Methods", "POST");
@@ -29,12 +30,13 @@ app.use('/attention',attentionRouter);
 app.use('/viewSpot',viewSpotRouter);
 app.use('/comment',CommentRouter);
 app.use('/reply',Reply);
-app.use('/encourage',Encourage)
+app.use('/encourage',Encourage);
+app.use("/chat",Chats)
 
    io.on('connection',(socket)=>{
      socket.on('sendmsg',(data)=>{
-       const {chatId,txt}=data;
-       Chat.create({'t':new Date().getTime(),chatId,txt},(err,doc)=>{
+       const {from,txt,to}=data;
+       Chat.create({'t':new Date().getTime(),from,to,txt},(err,doc)=>{
          if(err){
            console.log(err);
            return ;
