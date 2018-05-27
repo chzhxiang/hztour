@@ -10,14 +10,11 @@
       </p>
     </div>
     <div class="operation">
-      <p>
-        <img src="http://localhost:8080/static/icon/edit.png"/>
-        <span @click="goWriteTravels">写游记</span>
-      </p>
+      <p  @click="goWriteTravels"><img src="http://localhost:8080/static/icon/edit.png"/>写游记</p>
       <p @click="myTravels"><img src="http://localhost:8080/static/icon/myEdit.png"/>我的游记</p>
       <p @click="collectionFn"><img src="http://localhost:8080/static/icon/collection.png"/>我的收藏</p>
       <p @click="followFn"><img src="http://localhost:8080/static/icon/follow.png"/>我的关注</p>
-	  <p @click="serverFn"><img src="http://localhost:8080/static/icon/server.png"/>联系客服</p>
+	    <p @click="serverFn"><img src="http://localhost:8080/static/icon/server.png"/>联系客服<span>{{msgNum}}</span></p>
       <p class="out" @click="outLoginFn">退出登录</p>
     </div>
   </div>
@@ -25,6 +22,7 @@
 
 <script>
   import {mapGetters,mapMutations} from "vuex";
+  import axios from "axios";
   import Io from "socket.io-client";
   const socket=Io('ws://localhost:9090');
   socket.on("recvmsg",(data)=>{
@@ -35,16 +33,27 @@
       data(){
           return{
             userImg:'',
-            userName:''
+            userName:'',
+            msgNum:0
           }
       },
       created(){
         if(window.localStorage.getItem("userInfo")){
           this.userName=JSON.parse(window.localStorage.getItem("userInfo"))[0].userName;
           this.userImg=JSON.parse(window.localStorage.getItem("userInfo"))[0].avatar;
-          console.log("my");
         }
-        // console.log(window.localStorage.getItem("userInfo"));
+      },
+      activated(){
+        if(window.localStorage.getItem("userInfo")){
+          axios.post("/chat/selTR",{
+            to:JSON.parse(window.localStorage.getItem("userInfo"))[0].id,
+            readFlag:false
+          }).then((res)=>{
+            if(res.data.code===0){
+              this.msgNum=res.data.data.length;
+            }
+          })
+        }
       },
       computed:{
         ...mapGetters(['loginSuccess'])
@@ -76,6 +85,12 @@
           this.$router.push("/my/attention");
         },
 		    serverFn(){
+          axios.post("/chat/upd",{
+            to:JSON.parse(window.localStorage.getItem("userInfo"))[0].id,
+            readFlag:true
+          }).then((res)=>{
+            this.msgNum=0;
+          })
           if(this.userName){
             this.$router.push("/my/server_chat");
           }
@@ -118,6 +133,18 @@
 </script>
 
 <style scoped lang="stylus">
+  .operation>p>span{
+    display block;
+    padding 2px 5px;
+    border-radius 50%;
+    background skyblue;
+    color #fff;
+    position absolute;
+    top:2px;
+    text-align center;
+    line-height 18px;
+    left 80px;
+  }
   .infoBox
     background #f5f5f5
     height 100%
@@ -147,6 +174,7 @@
       background #fff
       box-shadow 0 0 1px 1px #ccc
       overflow hidden
+      position relative
       img
         margin 0px 5px 0px 0px;
         transform translateY(2px);

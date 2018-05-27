@@ -34,9 +34,12 @@
         Scroll
       },
       activated(){
-          if(window.localStorage.getItem("userInfo")){
-            this.chatId=JSON.parse(window.localStorage.getItem("userInfo"))[0].id;
-          }
+        if(!window.localStorage.getItem("userInfo")){
+          alert("您还未登录请前往登录！");
+          return;
+        }else if(window.localStorage.getItem("userInfo")){
+          this.chatId=JSON.parse(window.localStorage.getItem("userInfo"))[0].id;
+        }
       },
       created(){
         this.w=window.screen.width;
@@ -52,10 +55,16 @@
           window.history.back();
         },
         sendMsg(){
+          if(!window.localStorage.getItem("userInfo")){
+            alert("您还未登录请前往登录！");
+            return;
+          }
           socket.emit('sendmsg',{
-            from:this.chatId,
+            from:JSON.parse(window.localStorage.getItem("userInfo"))[0].id,
             to:"admins",
-            txt:this.txt
+            txt:this.txt,
+            userName:JSON.parse(window.localStorage.getItem("userInfo"))[0].userName,
+            userAva:JSON.parse(window.localStorage.getItem("userInfo"))[0].avatar
           });
           this.txt='';
         },

@@ -32,11 +32,29 @@ Router.post("/selT",(req,res)=>{
     res.json({code:0,data:data});
   })
 });
+Router.post("/selTR",(req,res)=>{
+  const {to,readFlag}=req.body;
+  Chats.find({to,readFlag},(err,data)=>{
+    if(err){
+      return res.json({code:1,data:data});
+    }
+    res.json({code:0,data:data});
+  })
+});
 
 //修改阅读标记
 Router.post("/upd",(req,res)=>{
-  const {_id,readFlag}=req.body;
-  Chats.update({_id},{$set:{readFlag}},(err,data)=>{
+  const {to,readFlag}=req.body;
+  Chats.update({to},{$set:{readFlag}},(err,data)=>{
+    if(err){
+      return res.json({code:1,data:err});
+    }
+    res.json({code:0,data:data});
+  })
+});
+Router.post("/upFT",(req,res)=>{
+  const {from,to,readFlag}=req.body;
+  Chats.update({from,to},{$set:{readFlag}},(err,data)=>{
     if(err){
       return res.json({code:1,data:err});
     }

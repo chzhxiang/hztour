@@ -76,7 +76,9 @@ const models={
   	'from':{'type':String,'require':true},
     'to':{'type':String,'require':true},
   	'txt':{'type':String,'require':true},
-	  'readFlag':{'type':Boolean,'require':true}
+	  'readFlag':{'type':Boolean,'require':true},
+    'userAva':{'type':String},
+    'userName':{'type':String,'require':true}
   }
 }
 

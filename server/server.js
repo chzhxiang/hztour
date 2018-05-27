@@ -35,16 +35,15 @@ app.use("/chat",Chats)
 
    io.on('connection',(socket)=>{
      socket.on('sendmsg',(data)=>{
-       const {from,txt,to}=data;
-       Chat.create({'t':new Date().getTime(),from,to,txt},(err,doc)=>{
+       const {from,txt,to,userAva,userName}=data;
+       Chat.create({'t':new Date().getTime(),from,to,txt,'readFlag':false,userAva,userName},(err,doc)=>{
          if(err){
            console.log(err);
            return ;
          }
          if(!err){
-			 console.log("123");
            io.emit("recvmsg",doc);
-		   return;
+           return;
          }
        })
      })
